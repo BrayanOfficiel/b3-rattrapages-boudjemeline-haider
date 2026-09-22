@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>genuary26 // haider</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="marquee-bar">
+  <div class="marquee-track">GENUARY 2026 -- 31 JOURS DE CODE -- PAS DE IA LA DEDANS -- FAIT AVEC P5.JS -- RATTRAPAGE B3 IIM -- HAIDER RAYAN BOUDJEMELINE -- GENUARY 2026 -- 31 JOURS DE CODE -- PAS DE IA LA DEDANS -- FAIT AVEC P5.JS -- RATTRAPAGE B3 IIM -- HAIDER RAYAN BOUDJEMELINE -- </div>
+</div>
+
+<header class="head">
+  <pre class="ascii">
+   ___ ___ _  _ _   _   _   ___ __   __ ____   __
+  / __| __| \| | | | | /_\ | _ \\ \ / /|_  /   / /
+ | (_ | _|| .` | |_| |/ _ \|   / \ V /  / /   / /
+  \___|___|_|\_|\___//_/ \_\_|_\  \_/  /___| /_/
+  </pre>
+  <p class="tagline">31 sketches p5.js, un par jour de janvier, un prompt genuary chacun. clique une case pour la lancer en live.</p>
+</header>
+
+<nav class="tools">
+  <button id="chatbot-toggle" class="btn-weird">parler au bot &gt;&gt;</button>
+  <a class="btn-weird" href="zine/zine.html">voir le zine</a>
+  <span class="live-status" id="live-status">rien en live</span>
+</nav>
+
+<main id="grid" class="grid"></main>
+
+<div id="live-modal" class="live-modal hidden">
+  <div class="live-modal-inner">
+    <div class="live-modal-head">
+      <span id="live-title">--</span>
+      <button id="live-close" class="btn-weird">fermer [x]</button>
+    </div>
+    <div id="live-canvas-holder"></div>
+  </div>
+</div>
+
+<div id="chatbot-panel" class="chatbot-panel hidden">
+  <div class="chatbot-head">
+    <span>bot-genuary_v1</span>
+    <button id="chatbot-close" class="btn-weird">x</button>
+  </div>
+  <div id="chatbot-log" class="chatbot-log"></div>
+  <form id="chatbot-form" class="chatbot-form">
+    <input id="chatbot-input" type="text" autocomplete="off" placeholder="tape un truc... (bonjour, ton prefere, sketch 12)">
+    <button type="submit" class="btn-weird">envoyer</button>
+  </form>
+</div>
+
+<footer class="foot">
+  <p>fait par haider rayan boudjemeline. code source pas beau expres, voir readme.md. contact: boudjemelinehaider@gmail.com / github.com/BrayanOfficiel</p>
+</footer>
+
+<script src="lib/p5.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/p5@1/lib/p5.min.js';"></script>
+<script>window.sketches = {};</script>
+<script src="sketches/day01.js"></script>
+<script src="sketches/day02.js"></script>
+<script src="sketches/day03.js"></script>
+<script src="sketches/day04.js"></script>
+<script src="sketches/day05.js"></script>
+<script src="sketches/day06.js"></script>
+<script src="sketches/day07.js"></script>
+<script src="sketches/day08.js"></script>
+<script src="sketches/day09.js"></script>
+<script src="sketches/day10.js"></script>
+<script src="sketches/day11.js"></script>
+<script src="sketches/day12.js"></script>
+<script src="sketches/day13.js"></script>
+<script src="sketches/day14.js"></script>
+<script src="sketches/day15.js"></script>
+<script src="sketches/day16.js"></script>
+<script src="sketches/day17.js"></script>
+<script src="sketches/day18.js"></script>
+<script src="sketches/day19.js"></script>
+<script src="sketches/day20.js"></script>
+<script src="sketches/day21.js"></script>
+<script src="sketches/day22.js"></script>
+<script src="sketches/day23.js"></script>
+<script src="sketches/day24.js"></script>
+<script src="sketches/day25.js"></script>
+<script src="sketches/day26.js"></script>
+<script src="sketches/day27.js"></script>
+<script src="sketches/day28.js"></script>
+<script src="sketches/day29.js"></script>
+<script src="sketches/day30.js"></script>
+<script src="sketches/day31.js"></script>
+<script src="main.js"></script>
+<script src="chatbot.js"></script>
+</body>
+</html>
