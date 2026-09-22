@@ -1,0 +1,15 @@
+{
+  "name": "picard-vision",
+  "version": "1.0.0",
+  "description": "Image recognition demo for the Picard vending machine, ml5.js + MobileNet",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo \"nothing to build, static files only\""
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "Haider Rayan Boudjemeline",
+  "license": "ISC"
+}

@@ -1,0 +1,50 @@
+/* kiosk mode: big, few things, high contrast */
+
+body {
+  font-size: 1.25rem;
+}
+
+.preview {
+  max-width: 640px;
+  min-height: 320px;
+  background: #fff;
+  border: 4px dashed #ced4da;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.preview img,
+.preview video,
+.preview canvas {
+  max-width: 100%;
+  max-height: 480px;
+  display: block;
+}
+
+.btn-kiosk {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.25rem;
+  min-width: 220px;
+}
+
+#results {
+  max-width: 640px;
+}
+
+.result-label {
+  font-size: 1.75rem;
+  text-transform: capitalize;
+}
+
+.progress {
+  height: 2rem;
+  font-size: 1.25rem;
+}
+
+/* greyed out when the model is not sure */
+.results-low {
+  opacity: 0.5;
+}
