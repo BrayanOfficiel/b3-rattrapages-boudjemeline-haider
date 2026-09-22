@@ -36,10 +36,10 @@ async function init() {
     return;
   }
 
-  // ml5 1.x: the instance comes back right away, the weights arrive later
+  // ml5 1.x without p5: imageClassifier() gives back a promise of the instance
   try {
-    classifier = ml5.imageClassifier('MobileNet');
-    await classifier.ready;
+    classifier = await ml5.imageClassifier('MobileNet');
+    if (classifier.ready) await classifier.ready;
   } catch (err) {
     setStatus('Le modèle MobileNet ne charge pas, vérifiez la connexion.', 'danger');
     return;
