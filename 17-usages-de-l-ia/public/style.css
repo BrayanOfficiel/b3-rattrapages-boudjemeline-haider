@@ -6,9 +6,6 @@ body {
 
 .preview {
   max-width: 640px;
-  min-height: 320px;
-  background: #fff;
-  border: 4px dashed #ced4da;
   border-radius: 1rem;
   display: flex;
   align-items: center;

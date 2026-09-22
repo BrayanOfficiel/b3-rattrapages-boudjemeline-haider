@@ -2,14 +2,13 @@ const status = document.getElementById('status');
 const photo = document.getElementById('photo');
 const cam = document.getElementById('cam');
 const frame = document.getElementById('frame');
-const placeholder = document.getElementById('placeholder');
+const preview = document.getElementById('preview');
 const fileInput = document.getElementById('file');
 const webcamBtn = document.getElementById('webcam');
 const captureBtn = document.getElementById('capture');
 const analyzeBtn = document.getElementById('analyze');
 const resetBtn = document.getElementById('reset');
 const results = document.getElementById('results');
-const warning = document.getElementById('warning');
 
 // what the classifier will look at (img, video or canvas)
 let source = null;
@@ -50,9 +49,10 @@ async function init() {
   if (source) analyzeBtn.disabled = false;
 }
 
-/** Show one element in the preview zone, hide the others. */
+/** Show one element in the preview zone, hide the others (null hides the zone). */
 function showInPreview(el) {
-  [photo, cam, frame, placeholder].forEach((node) => { node.hidden = node !== el; });
+  [photo, cam, frame].forEach((node) => { node.hidden = node !== el; });
+  preview.hidden = !el;
 }
 
 fileInput.addEventListener('change', () => {
@@ -145,12 +145,7 @@ analyzeBtn.addEventListener('click', async () => {
   // below the threshold we still show the results, but greyed out
   const unsure = top[0].confidence < minConfidence;
   results.classList.toggle('results-low', unsure);
-  warning.hidden = !unsure;
-  warning.textContent = unsure
-    ? "Je ne suis pas sûr de ce que je vois, essayez une autre image ou un meilleur éclairage."
-    : '';
-
-  setStatus(unsure ? 'Terminé, pas très sûr' : 'Terminé', 'success');
+  setStatus(unsure ? 'Terminé, peu fiable, essayez une autre image ou un meilleur éclairage.' : 'Terminé', unsure ? 'warning' : 'success');
   analyzeBtn.disabled = false;
 });
 
@@ -166,11 +161,10 @@ function reset() {
   source = null;
   fileInput.value = '';
   photo.removeAttribute('src');
-  showInPreview(placeholder);
+  showInPreview(null);
 
   results.innerHTML = '';
   results.classList.remove('results-low');
-  warning.hidden = true;
   captureBtn.hidden = true;
   analyzeBtn.disabled = true;
 

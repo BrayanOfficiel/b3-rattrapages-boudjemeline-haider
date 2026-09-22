@@ -14,7 +14,7 @@
 
     <header class="text-center mb-4">
       <h1 class="display-5 fw-bold text-primary">Picard Vision</h1>
-      <p class="lead mb-0">Test de reconnaissance d'image (ml5.js + MobileNet)</p>
+      <p class="lead mb-0">Reconnaissance d'image</p>
     </header>
 
     <div id="status" class="alert alert-secondary text-center fs-4" role="status">
@@ -22,11 +22,10 @@
     </div>
 
     <!-- preview zone: image, webcam or captured frame -->
-    <section id="preview" class="preview mx-auto mb-4">
+    <section id="preview" class="preview mx-auto mb-4" hidden>
       <img id="photo" alt="Image à analyser" hidden>
       <video id="cam" autoplay playsinline muted hidden></video>
       <canvas id="frame" hidden></canvas>
-      <p id="placeholder" class="text-muted fs-3 m-0">Pas d'image</p>
     </section>
 
     <section id="sources" class="d-grid gap-3 d-md-flex justify-content-md-center mb-4">
@@ -42,8 +41,6 @@
       <button id="analyze" class="btn btn-primary btn-lg btn-kiosk" type="button" disabled>Analyser</button>
       <button id="reset" class="btn btn-secondary btn-lg btn-kiosk" type="button">Recommencer</button>
     </section>
-
-    <div id="warning" class="alert alert-warning text-center fs-4" role="alert" hidden></div>
 
     <section id="results" class="mx-auto"></section>
 
