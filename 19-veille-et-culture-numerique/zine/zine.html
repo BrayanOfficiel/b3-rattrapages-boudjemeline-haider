@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>zine genuary26</title>
+<style>
+  /* mini zine 8 pages sur une feuille A4 paysage, template a la aloha studios */
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: #999;
+    font-family: "Courier New", Courier, monospace;
+  }
+  .sheet {
+    width: 297mm;
+    height: 210mm;
+    background: #fff;
+    color: #000;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    margin: 10mm auto;
+    position: relative;
+  }
+  .cell {
+    border: 1px dashed #000;
+    padding: 6mm;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  /* ligne du haut a l'envers, c'est la regle du pliage circulaire du template */
+  .row-top {
+    transform: rotate(180deg);
+  }
+  .cut-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    border-left: 2px solid #d00;
+  }
+  h1, h2, h3 { margin: 0 0 3mm; }
+  p { margin: 0 0 2mm; font-size: 9pt; line-height: 1.3; }
+  .p1 { text-align: center; }
+  .p1 h1 { font-size: 18pt; }
+  .p1 .sub { font-size: 9pt; }
+  .thumb-row { display: flex; gap: 2mm; margin-top: 2mm; }
+  .thumb-row img { width: 40%; height: auto; border: 1px solid #000; }
+  .mono-small { font-size: 8pt; }
+  .back-cell {
+    background: #000;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media print {
+    body { background: #fff; }
+    .sheet { margin: 0; box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="cut-line"></div>
+
+  <!-- rangee du haut, imprimee a l'envers (rotation 180), ordre inverse pour le pliage circulaire -->
+  <div class="cell row-top">
+    <h3>7 / agent</h3>
+    <p>le bot du site connait les 31 sketches et raconte son prefere. en une phrase : c'est un bot a mots cles, pas une ia, et il aime bien parler du jeu de la vie (#9).</p>
+    <p class="mono-small">site : [URL du site a ajouter]</p>
+  </div>
+  <div class="cell row-top">
+    <h3>6 / sketches</h3>
+    <div class="thumb-row">
+      <img src="../thumbs/day09.png" alt="day9">
+      <img src="../thumbs/day26.png" alt="day26">
+    </div>
+    <p class="mono-small">#9 automate cellulaire, jeu de la vie<br>#26 grille recursive, sierpinski</p>
+  </div>
+  <div class="cell row-top">
+    <h3>5 / sketches</h3>
+    <div class="thumb-row">
+      <img src="../thumbs/day08.png" alt="day8">
+      <img src="../thumbs/day31.png" alt="day31">
+    </div>
+    <p class="mono-small">#8 ville isometrique, cubes empiles<br>#31 gradient pixel par pixel, faux shader</p>
+  </div>
+  <div class="cell row-top back-cell">
+    <p style="color:#fff; font-size:9pt;">plie, coupe, agrafe a la main</p>
+  </div>
+
+  <!-- rangee du bas, sens normal -->
+  <div class="cell p1">
+    <h1>HAIDER RAYAN<br>BOUDJEMELINE</h1>
+    <p class="sub">genuary 2026, projet p5.js</p>
+  </div>
+  <div class="cell">
+    <h3>2 / bio</h3>
+    <p>21 ans, etudiant b3 a l'iim, en alternance dans une boite web. je bricole une golf 2 de 1991 le week-end et j'ai monte un hackintosh pour voir si c'etait possible.</p>
+  </div>
+  <div class="cell">
+    <h3>3 / contact</h3>
+    <p>mail : boudjemelinehaider@gmail.com</p>
+    <p>github : github.com/BrayanOfficiel</p>
+  </div>
+  <div class="cell">
+    <h3>4 / c'est quoi l'art generatif</h3>
+    <p>c'est du code qui produit une image au lieu d'un dessin fait a la main. on ecrit des regles, pas la forme finale. le hasard ou le bruit de perlin fait varier le resultat a chaque fois. genuary c'est un entrainement a ca, 31 jours, 31 regles.</p>
+  </div>
+</div>
+
+</body>
+</html>
