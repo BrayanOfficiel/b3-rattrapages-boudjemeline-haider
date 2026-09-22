@@ -7,6 +7,7 @@ const fileInput = document.getElementById('file');
 const webcamBtn = document.getElementById('webcam');
 const captureBtn = document.getElementById('capture');
 const analyzeBtn = document.getElementById('analyze');
+const resetBtn = document.getElementById('reset');
 const results = document.getElementById('results');
 const warning = document.getElementById('warning');
 
@@ -17,18 +18,35 @@ let classifier = null;
 let minConfidence = 0.5;
 let modelReady = false;
 
+const READY_MSG = 'Modèle prêt, choisissez une image ou lancez la webcam.';
+
+/** Update the status banner, type is a Bootstrap alert color. */
+function setStatus(text, type) {
+  status.textContent = text;
+  status.className = `alert alert-${type} text-center fs-4`;
+}
+
 /** Load the model once, reuse it after. */
 async function init() {
   const config = await fetch('/config').then((r) => r.json());
   minConfidence = config.minConfidence;
 
+  if (typeof ml5 === 'undefined') {
+    setStatus('La librairie ml5 ne charge pas, vérifiez la connexion.', 'danger');
+    return;
+  }
+
   // ml5 1.x: the instance comes back right away, the weights arrive later
-  classifier = ml5.imageClassifier('MobileNet');
-  await classifier.ready;
+  try {
+    classifier = ml5.imageClassifier('MobileNet');
+    await classifier.ready;
+  } catch (err) {
+    setStatus('Le modèle MobileNet ne charge pas, vérifiez la connexion.', 'danger');
+    return;
+  }
 
   modelReady = true;
-  status.textContent = 'Modèle prêt, choisissez une image ou lancez la webcam.';
-  status.className = 'alert alert-success text-center fs-4';
+  setStatus(READY_MSG, 'success');
   if (source) analyzeBtn.disabled = false;
 }
 
@@ -41,6 +59,7 @@ fileInput.addEventListener('change', () => {
   const file = fileInput.files[0];
   if (!file) return;
 
+  // TODO stop the webcam if the user picks a file while it runs
   photo.src = URL.createObjectURL(file);
   showInPreview(photo);
   source = photo;
@@ -52,8 +71,7 @@ webcamBtn.addEventListener('click', async () => {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
   } catch (err) {
     // NotAllowedError most of the time, or no camera at all
-    status.textContent = 'Webcam refusée ou introuvable, essayez avec une image.';
-    status.className = 'alert alert-danger text-center fs-4';
+    setStatus('Webcam refusée ou introuvable, essayez avec une image.', 'danger');
     return;
   }
 
@@ -104,8 +122,7 @@ analyzeBtn.addEventListener('click', async () => {
   if (!source || !modelReady) return;
 
   analyzeBtn.disabled = true;
-  status.textContent = 'Analyse en cours...';
-  status.className = 'alert alert-info text-center fs-4';
+  setStatus('Analyse en cours...', 'info');
 
   // classify() returns a promise in ml5 1.x, 3 results by default (topk)
   const raw = await classifier.classify(source);
@@ -122,9 +139,34 @@ analyzeBtn.addEventListener('click', async () => {
     ? "Je ne suis pas sûr de ce que je vois, essayez une autre image ou un meilleur éclairage."
     : '';
 
-  status.textContent = unsure ? 'Analyse terminée, résultat incertain.' : 'Analyse terminée.';
-  status.className = 'alert alert-success text-center fs-4';
+  setStatus(unsure ? 'Analyse terminée, résultat incertain.' : 'Analyse terminée.', 'success');
   analyzeBtn.disabled = false;
 });
+
+/** Back to the initial state, ready for another image. */
+function reset() {
+  // the camera light stays on otherwise
+  if (stream) {
+    stream.getTracks().forEach((t) => t.stop());
+    stream = null;
+    cam.srcObject = null;
+  }
+
+  source = null;
+  fileInput.value = '';
+  photo.removeAttribute('src');
+  showInPreview(placeholder);
+
+  results.innerHTML = '';
+  results.classList.remove('results-low');
+  warning.hidden = true;
+  captureBtn.hidden = true;
+  analyzeBtn.disabled = true;
+
+  // keep the loading / error banner if the model is not there yet
+  if (modelReady) setStatus(READY_MSG, 'success');
+}
+
+resetBtn.addEventListener('click', reset);
 
 init();
