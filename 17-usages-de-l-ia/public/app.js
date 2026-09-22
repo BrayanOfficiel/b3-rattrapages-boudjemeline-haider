@@ -18,7 +18,7 @@ let classifier = null;
 let minConfidence = 0.5;
 let modelReady = false;
 
-const READY_MSG = 'Modèle prêt, choisissez une image ou lancez la webcam.';
+const READY_MSG = 'Modele chargé';
 
 /** Update the status banner, type is a Bootstrap alert color. */
 function setStatus(text, type) {
@@ -60,10 +60,13 @@ fileInput.addEventListener('change', () => {
   if (!file) return;
 
   // TODO stop the webcam if the user picks a file while it runs
+  analyzeBtn.disabled = true;
+  photo.onload = () => {
+    source = photo;
+    analyzeBtn.disabled = !modelReady;
+  };
   photo.src = URL.createObjectURL(file);
   showInPreview(photo);
-  source = photo;
-  analyzeBtn.disabled = !modelReady;
 });
 
 webcamBtn.addEventListener('click', async () => {
@@ -122,10 +125,18 @@ analyzeBtn.addEventListener('click', async () => {
   if (!source || !modelReady) return;
 
   analyzeBtn.disabled = true;
-  setStatus('Analyse en cours...', 'info');
+  setStatus('Analyse...', 'info');
 
   // classify() returns a promise in ml5 1.x, 3 results by default (topk)
-  const raw = await classifier.classify(source);
+  let raw;
+  try {
+    raw = await classifier.classify(source);
+  } catch (err) {
+    console.error(err);
+    setStatus('Erreur pendant l\'analyse : ' + err.message, 'danger');
+    analyzeBtn.disabled = false;
+    return;
+  }
   const top = raw.sort((a, b) => b.confidence - a.confidence).slice(0, 3);
   // console.log(top);
 
@@ -139,7 +150,7 @@ analyzeBtn.addEventListener('click', async () => {
     ? "Je ne suis pas sûr de ce que je vois, essayez une autre image ou un meilleur éclairage."
     : '';
 
-  setStatus(unsure ? 'Analyse terminée, résultat incertain.' : 'Analyse terminée.', 'success');
+  setStatus(unsure ? 'Terminé, pas très sûr' : 'Terminé', 'success');
   analyzeBtn.disabled = false;
 });
 
