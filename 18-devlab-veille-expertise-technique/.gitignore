@@ -2,3 +2,5 @@ node_modules/
 server/readings.jsonl
 firmware/picard_sensor/config.h
 .DS_Store
+__pycache__/
+.vscode/
