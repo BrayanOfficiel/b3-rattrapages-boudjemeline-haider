@@ -10,6 +10,7 @@ public class ProductPanel : MonoBehaviour
 
     [SerializeField] Canvas canvas;
     [SerializeField] Image background;
+    [SerializeField] Outline border;
     [SerializeField] TMP_Text title;
     [SerializeField] TMP_Text body;
     [SerializeField] TMP_Text detail;
@@ -67,7 +68,6 @@ public class ProductPanel : MonoBehaviour
         current = this;
         focused = true;
 
-        transform.localScale = Vector3.one * focusScale;
         // local Y of the tracked image is its normal, so "up" here means towards the user
         transform.localPosition = restPosition + Vector3.up * focusLift;
         Haptic();
@@ -82,7 +82,6 @@ public class ProductPanel : MonoBehaviour
         if (current == this)
             current = null;
 
-        transform.localScale = Vector3.one;
         transform.localPosition = restPosition;
         Render();
     }
@@ -93,29 +92,39 @@ public class ProductPanel : MonoBehaviour
             return;
 
         var a11y = AccessibilitySettings.Instance;
-        float scale = a11y != null ? a11y.TextScale : 1f;
+        float textScale = a11y != null ? a11y.TextScale : 1f;
         bool story = a11y != null && a11y.StoryMode;
 
+        // the whole card scales up now, base font sizes stay fixed
+        title.fontSize = BaseTitleSize;
+        body.fontSize = BaseBodySize;
+        detail.fontSize = BaseBodySize;
+        transform.localScale = Vector3.one * textScale * (focused ? focusScale : 1f);
+
         title.text = data.name;
-        title.fontSize = BaseTitleSize * scale;
-        body.fontSize = BaseBodySize * scale;
-        detail.fontSize = BaseBodySize * scale;
 
-        string cook = data.cookMinutes > 0 ? data.cookMinutes + " min" : "prêt à manger";
-        body.text = data.price.ToString("0.00") + " EUR  |  " + cook;
-
-        if (focused)
+        if (story)
         {
-            // the point of focus mode: allergens readable from one meter away
-            detail.text = "Allergènes : " + data.AllergensLine()
-                + "\nOrigine : " + data.origin
-                + "\nÀ consommer sous " + data.dlcDays + " j";
-            if (story)
-                detail.text += "\n\n" + data.story;
+            // coulisses mode: where it comes from and one line on how it's made
+            body.text = "Origine : " + data.origin;
+            detail.text = data.story;
         }
         else
         {
-            detail.text = "Allergènes : " + data.AllergensLine();
+            string cook = data.cookMinutes > 0 ? data.cookMinutes + " min" : "prêt à manger";
+            body.text = data.price.ToString("0.00") + " EUR  |  " + cook;
+
+            if (focused)
+            {
+                // the point of focus mode: allergens readable from one meter away
+                detail.text = "Allergènes : " + data.AllergensLine()
+                    + "\nOrigine : " + data.origin
+                    + "\nÀ consommer sous " + data.dlcDays + " j";
+            }
+            else
+            {
+                detail.text = "Allergènes : " + data.AllergensLine();
+            }
         }
 
         infoButton.gameObject.SetActive(!focused);
@@ -129,6 +138,13 @@ public class ProductPanel : MonoBehaviour
             detail.color = a11y.PanelText;
             Tint(infoButton, a11y);
             Tint(backButton, a11y);
+
+            if (border != null)
+            {
+                border.effectColor = a11y.PanelBorderColor;
+                border.effectDistance = Vector2.one * a11y.PanelBorderWidth;
+                border.enabled = a11y.PanelBorderWidth > 0f;
+            }
         }
     }
 

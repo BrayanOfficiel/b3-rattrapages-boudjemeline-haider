@@ -17,13 +17,13 @@ using UnityEngine.XR.ARSubsystems;
 /// <summary>Builds the whole AR scene, the panel prefab and the image library from code, so nothing is hand edited in YAML.</summary>
 public static class PicardSceneBuilder
 {
-    const string MarkerPath = "Assets/AR/marker-picard-campus.png";
+    const string MarkerPath = "Assets/AR/marker-picard-campus.jpg";
     const string LibraryPath = "Assets/AR/PicardMarkers.asset";
     const string PrefabPath = "Assets/Prefabs/ProductPanel.prefab";
     const string ScenePath = "Assets/Scenes/PicardAR.unity";
 
     // 15 cm printed marker, must match the paper size or ARKit puts the panels at the wrong depth
-    static readonly Vector2 MarkerSizeMeters = new Vector2(0.15f, 0.15f);
+    static readonly Vector2 MarkerSizeMeters = new Vector2(0.15f, 0.1875f);
 
     [MenuItem("Picard/Build AR Scene")]
     public static void BuildScene()
@@ -86,7 +86,8 @@ public static class PicardSceneBuilder
         SetRef(spawner, "panelPrefab", prefab);
         logicGo.AddComponent<TapHandler>();
 
-        BuildHud();
+        var hintGo = BuildHud();
+        SetRef(spawner, "hint", hintGo);
 
         var esGo = new GameObject("EventSystem");
         esGo.AddComponent<EventSystem>();
@@ -188,6 +189,10 @@ public static class PicardSceneBuilder
         var bg = content.AddComponent<Image>();
         bg.color = new Color(1f, 1f, 1f, 0.9f);
         bg.raycastTarget = false;
+        var border = content.AddComponent<Outline>();
+        border.effectColor = Color.white;
+        border.effectDistance = Vector2.zero;
+        border.enabled = false; // turned on only in high contrast mode
         var layout = content.AddComponent<VerticalLayoutGroup>();
         layout.padding = new RectOffset(12, 12, 12, 12);
         layout.spacing = 6f;
@@ -207,6 +212,7 @@ public static class PicardSceneBuilder
 
         SetRef(panel, "canvas", canvas);
         SetRef(panel, "background", bg);
+        SetRef(panel, "border", border);
         SetRef(panel, "title", title);
         SetRef(panel, "body", body);
         SetRef(panel, "detail", detail);
@@ -218,7 +224,7 @@ public static class PicardSceneBuilder
         return prefab;
     }
 
-    static void BuildHud()
+    static GameObject BuildHud()
     {
         var hudGo = new GameObject("HUD", typeof(RectTransform));
         var canvas = hudGo.AddComponent<Canvas>();
@@ -241,23 +247,22 @@ public static class PicardSceneBuilder
         var hintBg = hint.AddComponent<Image>();
         hintBg.color = new Color(0f, 0f, 0f, 0.75f);
         hintBg.raycastTarget = false;
-        var hintText = MakeText("Text", hint.transform, "Vise l'affiche Picard Campus collée sur le distributeur", 16f, FontStyles.Normal);
+        var hintText = MakeText("Text", hint.transform, "Vise l'affiche sur le distributeur", 16f, FontStyles.Normal);
         hintText.color = Color.white;
         hintText.alignment = TextAlignmentOptions.Center;
         Stretch(hintText.GetComponent<RectTransform>(), 8f);
 
-        // three buttons at the bottom, 56 pt tall (Apple HIG and WCAG 2.5.5 ask for 44 minimum)
-        var contrast = MakeHudButton(hudGo.transform, "Contraste +", -126f);
-        var text = MakeHudButton(hudGo.transform, "Texte 100 %", 0f);
-        var story = MakeHudButton(hudGo.transform, "Coulisses", 126f);
+        // two buttons at the bottom, 56 pt tall (Apple HIG and WCAG 2.5.5 ask for 44 minimum)
+        var contrast = MakeHudButton(hudGo.transform, "Dark mode", -70f);
+        var text = MakeHudButton(hudGo.transform, "Texte 100 %", 70f);
 
         UnityEventTools.AddPersistentListener(contrast.onClick, settings.ToggleContrast);
         UnityEventTools.AddPersistentListener(text.onClick, settings.CycleTextScale);
-        UnityEventTools.AddPersistentListener(story.onClick, settings.ToggleStory);
 
         SetRef(settings, "contrastLabel", contrast.GetComponentInChildren<TMP_Text>());
         SetRef(settings, "textLabel", text.GetComponentInChildren<TMP_Text>());
-        SetRef(settings, "storyLabel", story.GetComponentInChildren<TMP_Text>());
+
+        return hint;
     }
 
     static Button MakeHudButton(Transform parent, string label, float x)
@@ -289,17 +294,16 @@ public static class PicardSceneBuilder
 
     static void SetLibrary(ARTrackedImageManager manager, XRReferenceImageLibrary lib)
     {
-        // go through the serialized field, the property setter is meant for runtime
+        // public property first, it is the reliable path (SerializedObject alone left the
+        // manager without a library in a real build once, ARKit started with no detectionImages)
+        manager.referenceLibrary = lib;
+
         var so = new SerializedObject(manager);
         var prop = so.FindProperty("m_SerializedLibrary");
         if (prop != null)
         {
             prop.objectReferenceValue = lib;
             so.ApplyModifiedPropertiesWithoutUndo();
-        }
-        else
-        {
-            manager.referenceLibrary = lib;
         }
     }
 
