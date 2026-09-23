@@ -92,9 +92,8 @@ public static class PicardSceneBuilder
         var esGo = new GameObject("EventSystem");
         esGo.AddComponent<EventSystem>();
         var module = esGo.AddComponent<InputSystemUIInputModule>();
-        // don't rely on the runtime fallback, point it at the default actions
-        module.actionsAsset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(
-            "Packages/com.unity.inputsystem/InputSystem/Plugins/PlayerInput/DefaultInputActions.inputactions");
+        // without this the taps never reach the buttons
+        module.AssignDefaultActions();
 
         EnsureFolder("Assets/Scenes");
         EditorSceneManager.SaveScene(scene, ScenePath);
