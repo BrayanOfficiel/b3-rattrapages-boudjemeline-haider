@@ -290,6 +290,7 @@ public static class PicardSceneBuilder
         rot.AddBinding("<HandheldARInputDevice>/deviceRotation");
 
         var driver = camGo.AddComponent<TrackedPoseDriver>();
+        camGo.AddComponent<OrientationFix>();
         driver.positionInput = new InputActionProperty(pos);
         driver.rotationInput = new InputActionProperty(rot);
     }
