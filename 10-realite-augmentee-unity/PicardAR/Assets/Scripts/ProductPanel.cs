@@ -136,7 +136,7 @@ public class ProductPanel : MonoBehaviour
     {
         var img = b.GetComponent<Image>();
         if (img != null) img.color = a11y.ButtonBackground;
-        var label = b.GetComponentInChildren<TMP_Text>();
+        var label = b.GetComponentInChildren<TMP_Text>(true);
         if (label != null) label.color = a11y.ButtonText;
     }
 

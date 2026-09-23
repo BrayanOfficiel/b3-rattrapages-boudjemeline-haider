@@ -1,0 +1,25 @@
+# Unity
+PicardAR/[Ll]ibrary/
+PicardAR/[Tt]emp/
+PicardAR/[Oo]bj/
+PicardAR/[Bb]uild/
+PicardAR/[Bb]uilds/
+PicardAR/[Ll]ogs/
+PicardAR/[Uu]ser[Ss]ettings/
+PicardAR/[Mm]emoryCaptures/
+PicardAR/.vs/
+PicardAR/.idea/
+PicardAR/*.csproj
+PicardAR/*.sln
+PicardAR/*.suo
+PicardAR/*.user
+PicardAR/*.pidb
+PicardAR/*.booproj
+PicardAR/*.svd
+PicardAR/*.vsconfig
+
+# xcode export
+PicardAR/iOSBuild/
+
+# mac
+.DS_Store
