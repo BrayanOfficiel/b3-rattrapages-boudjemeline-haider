@@ -17,6 +17,7 @@
           <div class="card-body">
             <div class="text-muted small">Température</div>
             <div class="display-6" id="temp">--</div>
+            <div class="text-muted small" id="hum"></div>
           </div>
         </div>
       </div>
@@ -25,6 +26,7 @@
           <div class="card-body">
             <div class="text-muted small">Porte</div>
             <div class="display-6" id="door">--</div>
+            <div class="text-muted small" id="dist"></div>
           </div>
         </div>
       </div>
@@ -41,7 +43,7 @@
 
     <table class="table table-sm table-striped bg-white">
       <thead>
-        <tr><th>Reçu</th><th>Machine</th><th>Temp (°C)</th><th>Porte</th><th>RSSI</th><th>Uptime</th></tr>
+        <tr><th>Reçu</th><th>Machine</th><th>Temp (°C)</th><th>Hum. (%)</th><th>Porte</th><th>Distance (cm)</th><th>RSSI</th><th>Uptime</th></tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
@@ -50,6 +52,7 @@
 
   <script>
     const fmtTemp = (t) => (t === null || t === undefined) ? 'n/a' : t.toFixed(1) + ' °C';
+    const fmtNum = (v) => (v === null || v === undefined) ? 'n/a' : v;
     const fmtDate = (iso) => new Date(iso).toLocaleTimeString('fr-FR');
 
     async function refresh() {
@@ -59,21 +62,22 @@
 
       const last = list[0];
       document.getElementById('temp').textContent = fmtTemp(last.temp_c);
+      document.getElementById('hum').textContent = 'humidité ' + fmtNum(last.humidity) + ' %';
+      document.getElementById('dist').textContent = 'distance ' + fmtNum(last.distance_cm) + ' cm';
       const door = document.getElementById('door');
       door.textContent = last.door_open ? 'ouverte' : 'fermée';
       door.className = 'display-6 ' + (last.door_open ? 'text-danger' : 'text-success');
       document.getElementById('when').textContent = fmtDate(last.received_at);
       document.getElementById('meta').textContent = last.device + ', rssi ' + last.rssi + ' dBm';
 
-      // warn when the freezer is above -18, the legal limit for frozen food
-      document.getElementById('temp').className = 'display-6 ' + (last.temp_c > -18 ? 'text-danger' : '');
-
       document.getElementById('rows').innerHTML = list.map((r) => `
         <tr>
           <td>${fmtDate(r.received_at)}</td>
           <td>${r.device}</td>
           <td>${fmtTemp(r.temp_c)}</td>
+          <td>${fmtNum(r.humidity)}</td>
           <td>${r.door_open ? 'ouverte' : 'fermée'}</td>
+          <td>${fmtNum(r.distance_cm)}</td>
           <td>${r.rssi}</td>
           <td>${r.uptime_s} s</td>
         </tr>`).join('');

@@ -23,11 +23,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 /** Store one reading from a device, add the server timestamp. */
 app.post('/api/readings', (req, res) => {
-  const { device, temp_c, door_open, rssi, uptime_s } = req.body;
+  const { device, temp_c, humidity, door_open, distance_cm, rssi, uptime_s } = req.body;
   if (!device || typeof door_open !== 'boolean') {
     return res.status(400).json({ error: 'device and door_open are required' });
   }
-  const reading = { device, temp_c, door_open, rssi, uptime_s, received_at: new Date().toISOString() };
+  const reading = { device, temp_c, humidity, door_open, distance_cm, rssi, uptime_s, received_at: new Date().toISOString() };
   readings.push(reading);
   if (readings.length > MAX_IN_MEMORY) readings.shift();
   fs.appendFile(LOG_FILE, JSON.stringify(reading) + '\n', () => {});
