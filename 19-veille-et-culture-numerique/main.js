@@ -100,7 +100,6 @@ function openLive(n) {
   const modal = document.getElementById("live-modal");
   const holder = document.getElementById("live-canvas-holder");
   const title = document.getElementById("live-title");
-  const promptLine = document.getElementById("live-prompt");
 
   if (currentInstance) {
     currentInstance.remove();
@@ -115,7 +114,6 @@ function openLive(n) {
   }
 
   title.textContent = `genuary #${n} -- ${TITLES[n - 1]}`;
-  promptLine.textContent = `prompt : ${PROMPTS[n - 1]}`;
   modal.classList.remove("hidden");
 }
 

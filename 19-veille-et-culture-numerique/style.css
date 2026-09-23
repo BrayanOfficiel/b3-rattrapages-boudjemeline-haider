@@ -33,13 +33,12 @@ a {
 
 .marquee-track {
   display: inline-block;
-  padding-left: 100%;
-  animation: scrollmarquee 22s linear infinite;
+  animation: scrollmarquee 40s linear infinite;
 }
 
 @keyframes scrollmarquee {
   from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  to { transform: translateX(-50%); } /* text is doubled so the loop is seamless */
 }
 
 .head {
@@ -157,12 +156,6 @@ a {
 #live-canvas-holder canvas {
   max-width: 100%;
   height: auto !important;
-}
-
-.live-prompt {
-  font-size: 11px;
-  color: #888;
-  margin: 6px 0 0;
 }
 
 .chatbot-panel {
