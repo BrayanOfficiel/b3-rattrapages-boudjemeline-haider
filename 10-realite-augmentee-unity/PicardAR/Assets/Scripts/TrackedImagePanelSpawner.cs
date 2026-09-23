@@ -29,6 +29,14 @@ public class TrackedImagePanelSpawner : MonoBehaviour
         foreach (var image in args.added)
             Spawn(image);
 
+        // ARKit keeps the trackable but drops to Limited when the poster leaves the frame,
+        // without this the panels stay stuck in the air at the last known pose
+        foreach (var image in args.updated)
+        {
+            if (roots.TryGetValue(image.trackableId, out var root))
+                root.SetActive(image.trackingState == TrackingState.Tracking);
+        }
+
         foreach (var pair in args.removed)
         {
             if (roots.TryGetValue(pair.Key, out var root))
