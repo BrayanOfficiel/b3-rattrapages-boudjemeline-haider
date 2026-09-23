@@ -34,14 +34,15 @@ public static class PicardSceneBuilder
             return;
         }
 
+        // ask before we touch the open scene, the prefab build dirties it
+        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+            return;
+
         var library = BuildImageLibrary();
         if (library == null)
             return;
 
         var prefab = BuildPanelPrefab();
-
-        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-            return;
         var scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
 
         // AR Session
@@ -89,7 +90,10 @@ public static class PicardSceneBuilder
 
         var esGo = new GameObject("EventSystem");
         esGo.AddComponent<EventSystem>();
-        esGo.AddComponent<InputSystemUIInputModule>();
+        var module = esGo.AddComponent<InputSystemUIInputModule>();
+        // don't rely on the runtime fallback, point it at the default actions
+        module.actionsAsset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(
+            "Packages/com.unity.inputsystem/InputSystem/Plugins/PlayerInput/DefaultInputActions.inputactions");
 
         EnsureFolder("Assets/Scenes");
         EditorSceneManager.SaveScene(scene, ScenePath);
