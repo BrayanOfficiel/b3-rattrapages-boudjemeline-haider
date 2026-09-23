@@ -166,11 +166,11 @@ public static class PicardSceneBuilder
 
         var root = new GameObject("ProductPanel");
         var col = root.AddComponent<BoxCollider>();
-        col.size = new Vector3(0.16f, 0.15f, 0.01f);
+        col.size = new Vector3(0.07f, 0.066f, 0.01f);
         root.AddComponent<Billboard>();
         var panel = root.AddComponent<ProductPanel>();
 
-        // 320 x 300 px at 0.0005 = 16 x 15 cm in the world
+        // 320 x 300 px at 0.00022 = 7 x 6.6 cm in the world
         var canvasGo = new GameObject("Canvas", typeof(RectTransform));
         canvasGo.transform.SetParent(root.transform, false);
         var canvas = canvasGo.AddComponent<Canvas>();
@@ -178,7 +178,7 @@ public static class PicardSceneBuilder
         canvasGo.AddComponent<GraphicRaycaster>();
         var canvasRt = canvasGo.GetComponent<RectTransform>();
         canvasRt.sizeDelta = new Vector2(320f, 300f);
-        canvasRt.localScale = Vector3.one * 0.0005f;
+        canvasRt.localScale = Vector3.one * 0.00022f;
 
         // content grows with the text size (WCAG 1.4.4), the card is not a fixed box
         var content = MakeRect("Content", canvasGo.transform);

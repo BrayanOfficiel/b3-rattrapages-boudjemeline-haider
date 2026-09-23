@@ -9,11 +9,10 @@ public class TrackedImagePanelSpawner : MonoBehaviour
     [SerializeField] ARTrackedImageManager imageManager;
     [SerializeField] GameObject panelPrefab;
     [SerializeField] GameObject hint;
-    // poster is vertical on a wall, cards fan out sideways above it, not flat on top of it
-    [SerializeField] float radius = 0.14f;
-    [SerializeField] float arcDegrees = 150f;
+    // poster is vertical on a wall, cards sit in a row above it, not flat on top of it
+    [SerializeField] float spacing = 0.08f;
     [SerializeField] float liftFromMarker = 0.03f;
-    [SerializeField] float heightAboveMarker = 0.12f;
+    [SerializeField] float heightAboveMarker = 0.14f;
 
     readonly Dictionary<TrackableId, GameObject> roots = new Dictionary<TrackableId, GameObject>();
 
@@ -102,8 +101,9 @@ public class TrackedImagePanelSpawner : MonoBehaviour
         for (int i = 0; i < products.Count; i++)
         {
             float t = products.Count == 1 ? 0.5f : (float)i / (products.Count - 1);
-            float a = Mathf.Lerp(-arcDegrees * 0.5f, arcDegrees * 0.5f, t) * Mathf.Deg2Rad;
-            var localPos = new Vector3(Mathf.Sin(a) * radius, heightAboveMarker, -liftFromMarker);
+            // straight row, 8 cm between card centers (cards are 7 cm wide)
+            float x = (t - 0.5f) * spacing * (products.Count - 1);
+            var localPos = new Vector3(x, heightAboveMarker, -liftFromMarker);
 
             var go = Instantiate(panelPrefab, root.transform);
             go.transform.localPosition = localPos;
