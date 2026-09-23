@@ -77,7 +77,7 @@ const SKETCH_INFO = {
   3: { title: "fibonacci forever", prompt: "fibonacci forever", tech: "spirale", note: "cercles dont le rayon suit fibonacci." },
   4: { title: "lowres", prompt: "lowres", tech: "bruit de perlin en gros pixels", note: "" },
   5: { title: "genuary", prompt: 'write "genuary" without a font', tech: "rects assemblés", note: "pas de police, juste des rectangles." },
-  6: { title: "lights", prompt: "lights on / off", tech: "grille + bruit dans le temps", note: "" },
+  6: { title: "blinding lights", prompt: "lights on / off", tech: "grille + bruit dans le temps", note: "" },
   7: { title: "venn", prompt: "boolean algebra", tech: "blend mode difference", note: "deux cercles qui font un faux xor." },
   8: { title: "city", prompt: "a city", tech: "isométrique", note: "cubes empilés, hauteur au bruit de perlin." },
   9: { title: "matrix eating amoeba", prompt: "crazy automaton", tech: "automate cellulaire", note: "jeu de la vie, c'est mon préféré." },

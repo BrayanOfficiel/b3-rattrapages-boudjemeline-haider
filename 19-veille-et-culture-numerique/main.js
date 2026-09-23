@@ -41,7 +41,7 @@ const TITLES = [
   "fibonacci forever",
   "lowres",
   "genuary",
-  "lights",
+  "blinding lights",
   "venn",
   "city",
   "matrix eating amoeba",
