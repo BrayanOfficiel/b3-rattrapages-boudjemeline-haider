@@ -7,4 +7,11 @@ const titles = [
 " _______    ______   ___   __    __  __   ________   ______    __  __   _____    ______      \n/______/\\  /_____/\\ /__/\\ /__/\\ /_/\\/_/\\ /_______/\\ /_____/\\  /_/\\/_/\\ /_____/\\ /_____/\\     \n\\::::__\\/__\\::::_\\/_\\::\\_\\\\  \\ \\\\:\\ \\:\\ \\\\::: _  \\ \\\\:::_ \\ \\ \\ \\ \\ \\ \\\\:::_:\\ \\\\:::__\\/     \n \\:\\ /____/\\\\:\\/___/\\\\:. `-\\  \\ \\\\:\\ \\:\\ \\\\::(_)  \\ \\\\:(_) ) )_\\:\\_\\ \\ \\   _\\:\\| \\:\\ \\____   \n  \\:\\\\_  _\\/ \\::___\\/_\\:. _    \\ \\\\:\\ \\:\\ \\\\:: __  \\ \\\\: __ `\\ \\\\::::_\\/  /::_/__ \\::__::/\\  \n   \\:\\_\\ \\ \\  \\:\\____/\\\\. \\`-\\  \\ \\\\:\\_\\:\\ \\\\:.\\ \\  \\ \\\\ \\ `\\ \\ \\ \\::\\ \\  \\:\\____/\\\\:\\_\\:\\ \\ \n    \\_____\\/   \\_____\\/ \\__\\/ \\__\\/ \\_____\\/ \\__\\/\\__\\/ \\_\\/ \\_\\/  \\__\\/   \\_____\\/ \\_____\\/"
 ];
 
-document.querySelector('.ascii').textContent = titles[Math.floor(Math.random() * titles.length)];
+// DOMContentLoaded pour pas dependre de l'ordre des scripts dans le head
+document.addEventListener('DOMContentLoaded', () => {
+  let i = Math.floor(Math.random() * titles.length);
+  // avoid showing the same one twice in a row
+  if (String(i) === localStorage.getItem('lastTitle')) i = (i + 1) % titles.length;
+  localStorage.setItem('lastTitle', i);
+  document.querySelector('.ascii').textContent = titles[i];
+});
