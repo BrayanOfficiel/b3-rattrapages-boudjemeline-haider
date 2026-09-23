@@ -3,13 +3,16 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 
 /// <summary>iOS 27 workaround: forces portrait and corrects a 90 deg roll between the ARKit pose and the screen.</summary>
+// runs before the EventSystem (order 0), so the UI raycasts and the tap ray use the fixed camera
+[DefaultExecutionOrder(-100)]
 public class OrientationFix : MonoBehaviour
 {
     // roll added on top of the tracked pose; a two finger tap cycles 0 / 90 / -90 / 180 to find the right one
     float rollFix = 90f; // not serialized: the scene kept the old 0 otherwise
 
     static readonly float[] Options = { 0f, 90f, -90f, 180f };
-    Quaternion lastFixed;
+    InputAction posAction;
+    InputAction rotAction;
 
     void Awake()
     {
@@ -18,10 +21,21 @@ public class OrientationFix : MonoBehaviour
         Screen.autorotateToPortraitUpsideDown = false;
         Screen.orientation = ScreenOrientation.Portrait;
 
-        // pose written in Update only, so LateUpdate below always comes after it
+        // the driver wrote the pose after us and the roll only came in LateUpdate,
+        // so clicks were cast with the wrong camera. We read the same actions ourselves instead.
         var driver = GetComponent<TrackedPoseDriver>();
         if (driver != null)
-            driver.updateType = TrackedPoseDriver.UpdateType.Update;
+        {
+            posAction = driver.positionInput.action;
+            rotAction = driver.rotationInput.action;
+            driver.enabled = false;
+        }
+    }
+
+    void OnEnable()
+    {
+        posAction?.Enable();
+        rotAction?.Enable();
     }
 
     void Update()
@@ -33,14 +47,14 @@ public class OrientationFix : MonoBehaviour
             rollFix = Options[(i + 1) % Options.Length];
             Debug.Log("[orient] rollFix=" + rollFix);
         }
-    }
 
-    void LateUpdate()
-    {
-        // skip if the driver did not write a new pose this frame, otherwise the roll piles up
-        if (rollFix == 0f || transform.localRotation == lastFixed)
+        if (posAction == null || rotAction == null)
             return;
-        transform.localRotation *= Quaternion.Euler(0f, 0f, rollFix);
-        lastFixed = transform.localRotation;
+        var rot = rotAction.ReadValue<Quaternion>();
+        // all zero until ARKit sends its first pose
+        if (rot.x == 0f && rot.y == 0f && rot.z == 0f && rot.w == 0f)
+            return;
+        transform.localPosition = posAction.ReadValue<Vector3>();
+        transform.localRotation = rot * Quaternion.Euler(0f, 0f, rollFix);
     }
 }
