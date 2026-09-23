@@ -87,13 +87,13 @@ const SKETCH_INFO = {
   21: { prompt: "bauhaus poster", tech: "formes plates couleurs primaires", note: "" },
   22: { prompt: "pen plotter ready", tech: "hachures", note: "que des traits, pensé pour un plotter." },
   23: { prompt: "transparency", tech: "cercles translucides empilés", note: "" },
-  24: { prompt: "perfectionist's nightmare", tech: "grille avec du jitter", note: "censé être parfait, décalé exprès." },
+  24: { prompt: "perfectionist's nightmare", tech: "grille avec du jitter", note: "chaque case decalee d'un poil pour casser l'alignement." },
   25: { prompt: "organic geometry", tech: "flow field", note: "champ de bruit de perlin, lignes organiques." },
   26: { prompt: "recursive grids", tech: "récursion type sierpinski", note: "" },
   27: { prompt: "lifeform", tech: "l-system", note: "un arbre qui pousse par règles de remplacement." },
-  28: { prompt: "no libraries, no canvas, only html elements", tech: "faux dom", note: "j'ai gardé p5 par contrainte du format, voir readme." },
+  28: { prompt: "no libraries, no canvas, only html elements", tech: "faux dom", note: "reste en p5/canvas, un visuel qui imite des blocs html." },
   29: { prompt: "genetic evolution and mutation", tech: "simulation simple", note: "des points qui dérivent vers une cible." },
-  30: { prompt: "it's not a bug, it's a feature", tech: "glitch pixels", note: "décalage de lignes de pixels volontaire." },
+  30: { prompt: "it's not a bug, it's a feature", tech: "glitch pixels", note: "lignes de pixels decalees, effet glitch." },
   31: { prompt: "glsl day", tech: "manipulation de pixels", note: "pas un vrai shader, je fais ça à la main avec loadPixels." },
 };
 

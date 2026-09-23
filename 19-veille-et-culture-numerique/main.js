@@ -65,7 +65,6 @@ function openLive(n) {
   const modal = document.getElementById("live-modal");
   const holder = document.getElementById("live-canvas-holder");
   const title = document.getElementById("live-title");
-  const status = document.getElementById("live-status");
 
   if (currentInstance) {
     currentInstance.remove();
@@ -80,7 +79,6 @@ function openLive(n) {
   }
 
   title.textContent = `genuary #${n} -- ${PROMPTS[n - 1]}`;
-  status.textContent = `live: #${n}`;
   modal.classList.remove("hidden");
 }
 
@@ -90,7 +88,6 @@ function closeLive() {
     currentInstance.remove();
     currentInstance = null;
   }
-  document.getElementById("live-status").textContent = "rien en live";
   modal.classList.add("hidden");
 }
 
