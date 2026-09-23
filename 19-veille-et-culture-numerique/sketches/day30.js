@@ -1,4 +1,4 @@
-// genuary prompt 30: it's not a bug, it's a feature
+// #30 it's not a bug it's a feature (prompt: it's not a bug, it's a feature)
 window.sketches[30] = (p) => {
   // deliberate glitch, pixel row shifting
   p.setup = () => { p.createCanvas(400, 400); p.pixelDensity(1); };

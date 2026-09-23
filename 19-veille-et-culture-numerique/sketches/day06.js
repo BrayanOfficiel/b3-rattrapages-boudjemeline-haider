@@ -1,4 +1,4 @@
-// genuary prompt 6: lights on / off
+// #6 lights (prompt: lights on / off)
 window.sketches[6] = (p) => {
   // grid of cells, on/off driven by a slow noise field
   let cells = 16;

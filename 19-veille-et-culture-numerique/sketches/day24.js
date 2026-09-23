@@ -1,4 +1,4 @@
-// genuary prompt 24: perfectionist's nightmare
+// #24 perfectionist's nightmare (prompt: perfectionist's nightmare)
 window.sketches[24] = (p) => {
   // grid that should be perfect but every cell is slightly off
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

@@ -1,4 +1,4 @@
-// genuary prompt 31: glsl day
+// #31 glsl day (prompt: glsl day)
 window.sketches[31] = (p) => {
   // no real shader here, loadPixels fakes a per-pixel gradient like a fragment shader would
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); p.pixelDensity(1); };

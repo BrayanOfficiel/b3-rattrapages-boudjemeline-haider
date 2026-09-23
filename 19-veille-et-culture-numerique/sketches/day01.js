@@ -1,4 +1,4 @@
-// genuary prompt 1: one color, one shape
+// #1 dots (prompt: one color, one shape)
 window.sketches[1] = (p) => {
   // grid of circles, single color, size driven by distance from center
   p.setup = () => {

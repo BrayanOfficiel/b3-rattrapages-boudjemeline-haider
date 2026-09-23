@@ -1,4 +1,4 @@
-// genuary prompt 11: quine
+// #11 line count (prompt: quine)
 window.sketches[11] = (p) => {
   // draws its own line count as bars, a fake self-reference not a real quine
   const lineCount = 24; // TODO count this for real instead of hardcoding

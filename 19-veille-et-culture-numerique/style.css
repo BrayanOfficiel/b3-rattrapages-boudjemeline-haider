@@ -159,6 +159,12 @@ a {
   height: auto !important;
 }
 
+.live-prompt {
+  font-size: 11px;
+  color: #888;
+  margin: 6px 0 0;
+}
+
 .chatbot-panel {
   position: fixed;
   right: 10px;

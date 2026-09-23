@@ -1,4 +1,4 @@
-// genuary prompt 20: one line
+// #20 AC (prompt: one line)
 window.sketches[20] = (p) => {
   // one continuous line, pen never lifts, noise driven path
   let x = 0, y = 200;

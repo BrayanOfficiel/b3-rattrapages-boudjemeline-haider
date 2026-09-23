@@ -1,4 +1,4 @@
-// genuary prompt 16: order and disorder
+// #16 order/disorder (prompt: order and disorder)
 window.sketches[16] = (p) => {
   // left half grid perfectly ordered, right half jittered
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

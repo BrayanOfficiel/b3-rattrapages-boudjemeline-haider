@@ -1,4 +1,4 @@
-// genuary prompt 28: no libraries, no canvas, only html elements
+// #28 tty progressbar (prompt: no libraries, no canvas, only html elements)
 window.sketches[28] = (p) => {
   // can't drop p5 entirely here since every day needs the same sketch shape,
   // so this fakes the "no canvas" spirit with flat divs drawn as plain rects (no gradients, no images)

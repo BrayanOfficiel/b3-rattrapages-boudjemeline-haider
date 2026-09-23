@@ -1,4 +1,4 @@
-// genuary prompt 17: wallpaper group
+// #17 scottish mosaic (prompt: wallpaper group)
 window.sketches[17] = (p) => {
   // simple p4 style repeating tile, translation symmetry
   const motif = (p, s) => {

@@ -1,4 +1,4 @@
-// genuary prompt 27: lifeform
+// #27 lifeform (prompt: lifeform)
 window.sketches[27] = (p) => {
   // l-system tree, centered and scaled up, with leaf dots at the branch tips
   // so it reads as something alive and not just a diagram in the corner

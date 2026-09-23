@@ -1,4 +1,4 @@
-// genuary prompt 23: transparency
+// #23 glare (prompt: transparency)
 window.sketches[23] = (p) => {
   // stacked translucent circles, additive feel
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

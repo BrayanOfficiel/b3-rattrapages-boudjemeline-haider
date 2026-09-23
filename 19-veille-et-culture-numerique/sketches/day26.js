@@ -1,4 +1,4 @@
-// genuary prompt 26: recursive grids
+// #26 recursive grids (prompt: recursive grids)
 window.sketches[26] = (p) => {
   // squares that recurse into smaller grids, sierpinski-ish
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

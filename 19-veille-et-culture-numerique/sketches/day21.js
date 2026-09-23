@@ -1,4 +1,4 @@
-// genuary prompt 21: bauhaus poster
+// #21 bauhaus (prompt: bauhaus poster)
 window.sketches[21] = (p) => {
   // bauhaus style, flat primary shapes, bold
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

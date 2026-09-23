@@ -1,4 +1,4 @@
-// genuary prompt 8: a city
+// #8 city (prompt: a city)
 window.sketches[8] = (p) => {
   // isometric city blocks, cubes drawn with 3 parallelograms
   const cube = (p, x, y, h, col) => {

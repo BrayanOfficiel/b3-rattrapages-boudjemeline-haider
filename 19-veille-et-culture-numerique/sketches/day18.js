@@ -1,4 +1,4 @@
-// genuary prompt 18: unexpected path
+// #18 unexpected path (prompt: unexpected path)
 window.sketches[18] = (p) => {
   // walker mostly keeps its heading, but every so often forces a hard random
   // turn, reads more like a path with surprises than pure random noise

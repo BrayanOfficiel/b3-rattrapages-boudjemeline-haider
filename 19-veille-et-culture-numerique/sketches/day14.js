@@ -1,4 +1,4 @@
-// genuary prompt 14: everything fits perfectly
+// #14 perfect fit (prompt: everything fits perfectly)
 window.sketches[14] = (p) => {
   // recursive rectangle subdivision (BSP), tight packing
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

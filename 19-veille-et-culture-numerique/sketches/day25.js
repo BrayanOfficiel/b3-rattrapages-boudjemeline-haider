@@ -1,4 +1,4 @@
-// genuary prompt 25: organic geometry
+// #25 organic geometry (prompt: organic geometry)
 window.sketches[25] = (p) => {
   // perlin flow field, soft organic blobs from straight steps
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); p.noiseSeed(25); p.background(250, 245, 235); };

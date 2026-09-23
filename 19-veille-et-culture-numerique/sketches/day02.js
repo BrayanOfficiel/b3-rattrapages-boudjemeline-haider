@@ -1,4 +1,4 @@
-// genuary prompt 2: twelve principles of animation (squash and stretch)
+// #2 bounce (prompt: twelve principles of animation)
 window.sketches[2] = (p) => {
   // two balls out of phase, squash on impact, stretch mid-air, plus a shadow
   // and a ground line so a still frame still reads as a bounce, not a floating dot

@@ -1,4 +1,4 @@
-// genuary prompt 3: fibonacci forever
+// #3 fibonacci forever (prompt: fibonacci forever)
 window.sketches[3] = (p) => {
   // fibonacci spiral, circle radius follows the sequence
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

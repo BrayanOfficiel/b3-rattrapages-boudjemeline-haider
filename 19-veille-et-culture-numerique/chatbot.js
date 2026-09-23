@@ -15,7 +15,7 @@ const RULES = [
       const n = m ? parseInt(m[1], 10) : null;
       const info = n ? SKETCH_INFO[n] : null;
       if (!info) return FAVORITE_LINE;
-      return `le ${n} ? bon choix. #${n} : "${info.prompt}". technique : ${info.tech}. ${info.note}`;
+      return `le ${n} ? bon choix. #${n} "${info.title}" : prompt officiel "${info.prompt}". technique : ${info.tech}. ${info.note}`;
     },
   },
   {
@@ -43,7 +43,15 @@ const RULES = [
       if (!n || n < 1 || n > 31) return "il y a seulement 31 jours, donnez un numéro entre 1 et 31.";
       const info = SKETCH_INFO[n];
       if (!info) return "je n'ai pas d'info claire sur celui la, allez voir directement sur la page.";
-      return `#${n} : "${info.prompt}". technique : ${info.tech}. ${info.note}`;
+      return `#${n} "${info.title}" : prompt officiel "${info.prompt}". technique : ${info.tech}. ${info.note}`;
+    },
+  },
+  {
+    test: (t) => findByTitle(t) !== null,
+    reply: (t) => {
+      const n = findByTitle(t);
+      const info = SKETCH_INFO[n];
+      return `#${n} "${info.title}" : prompt officiel "${info.prompt}". technique : ${info.tech}. ${info.note}`;
     },
   },
   {
@@ -64,38 +72,46 @@ const RULES = [
 ];
 
 const SKETCH_INFO = {
-  1: { prompt: "one color, one shape", tech: "grille de cercles", note: "simple, taille des cercles selon la distance au centre." },
-  2: { prompt: "twelve principles of animation", tech: "squash & stretch", note: "une balle qui rebondit et s'écrase." },
-  3: { prompt: "fibonacci forever", tech: "spirale", note: "cercles dont le rayon suit fibonacci." },
-  4: { prompt: "lowres", tech: "bruit de perlin en gros pixels", note: "" },
-  5: { prompt: 'write "genuary" without a font', tech: "rects assemblés", note: "pas de police, juste des rectangles." },
-  6: { prompt: "lights on / off", tech: "grille + bruit dans le temps", note: "" },
-  7: { prompt: "boolean algebra", tech: "blend mode difference", note: "deux cercles qui font un faux xor." },
-  8: { prompt: "a city", tech: "isométrique", note: "cubes empilés, hauteur au bruit de perlin." },
-  9: { prompt: "crazy automaton", tech: "automate cellulaire", note: "jeu de la vie, c'est mon préféré." },
-  10: { prompt: "polar coordinates", tech: "courbe polaire", note: "une rose à 5 pétales." },
-  11: { prompt: "quine", tech: "faux quine", note: "je triche un peu, c'est juste des barres qui représentent le nombre de lignes." },
-  12: { prompt: "boxes only", tech: "grille + bruit", note: "que des carrés, rien d'autre." },
-  13: { prompt: "self portrait", tech: "formes basiques", note: "portrait très abstrait, pas littéral." },
-  14: { prompt: "everything fits perfectly", tech: "subdivision récursive", note: "un peu comme du bsp de jeu vidéo." },
-  15: { prompt: "create an invisible object", tech: "ombres seules", note: "l'objet n'est jamais dessiné, que son ombre." },
-  16: { prompt: "order and disorder", tech: "grille moitié ordonnée moitié random", note: "" },
-  17: { prompt: "wallpaper group", tech: "motif répété", note: "symétrie par translation." },
-  18: { prompt: "unexpected path", tech: "marche aléatoire", note: "" },
-  19: { prompt: "16x16", tech: "grille stricte", note: "exactement 16 cases sur 16." },
-  20: { prompt: "one line", tech: "ligne continue", note: "le stylo ne se lève jamais." },
-  21: { prompt: "bauhaus poster", tech: "formes plates couleurs primaires", note: "" },
-  22: { prompt: "pen plotter ready", tech: "hachures", note: "que des traits, pensé pour un plotter." },
-  23: { prompt: "transparency", tech: "cercles translucides empilés", note: "" },
-  24: { prompt: "perfectionist's nightmare", tech: "grille avec du jitter", note: "chaque case decalee d'un poil pour casser l'alignement." },
-  25: { prompt: "organic geometry", tech: "flow field", note: "champ de bruit de perlin, lignes organiques." },
-  26: { prompt: "recursive grids", tech: "récursion type sierpinski", note: "" },
-  27: { prompt: "lifeform", tech: "l-system", note: "un arbre qui pousse par règles de remplacement." },
-  28: { prompt: "no libraries, no canvas, only html elements", tech: "faux dom", note: "reste en p5/canvas, un visuel qui imite des blocs html." },
-  29: { prompt: "genetic evolution and mutation", tech: "simulation simple", note: "des points qui dérivent vers une cible." },
-  30: { prompt: "it's not a bug, it's a feature", tech: "glitch pixels", note: "lignes de pixels decalees, effet glitch." },
-  31: { prompt: "glsl day", tech: "manipulation de pixels", note: "pas un vrai shader, je fais ça à la main avec loadPixels." },
+  1: { title: "dots", prompt: "one color, one shape", tech: "grille de cercles", note: "simple, taille des cercles selon la distance au centre." },
+  2: { title: "bounce", prompt: "twelve principles of animation", tech: "squash & stretch", note: "une balle qui rebondit et s'écrase." },
+  3: { title: "fibonacci forever", prompt: "fibonacci forever", tech: "spirale", note: "cercles dont le rayon suit fibonacci." },
+  4: { title: "lowres", prompt: "lowres", tech: "bruit de perlin en gros pixels", note: "" },
+  5: { title: "genuary", prompt: 'write "genuary" without a font', tech: "rects assemblés", note: "pas de police, juste des rectangles." },
+  6: { title: "lights", prompt: "lights on / off", tech: "grille + bruit dans le temps", note: "" },
+  7: { title: "venn", prompt: "boolean algebra", tech: "blend mode difference", note: "deux cercles qui font un faux xor." },
+  8: { title: "city", prompt: "a city", tech: "isométrique", note: "cubes empilés, hauteur au bruit de perlin." },
+  9: { title: "matrix eating amoeba", prompt: "crazy automaton", tech: "automate cellulaire", note: "jeu de la vie, c'est mon préféré." },
+  10: { title: "magnetic flower", prompt: "polar coordinates", tech: "courbe polaire", note: "une rose à 5 pétales." },
+  11: { title: "line count", prompt: "quine", tech: "faux quine", note: "je triche un peu, c'est juste des barres qui représentent le nombre de lignes." },
+  12: { title: "boxes only", prompt: "boxes only", tech: "grille + bruit", note: "que des carrés, rien d'autre." },
+  13: { title: "portrait", prompt: "self portrait", tech: "ascii art", note: "portrait genere en caracteres ascii, lettres de HAIDER." },
+  14: { title: "perfect fit", prompt: "everything fits perfectly", tech: "subdivision récursive", note: "un peu comme du bsp de jeu vidéo." },
+  15: { title: "ghost", prompt: "create an invisible object", tech: "ombres seules", note: "l'objet n'est jamais dessiné, que son ombre." },
+  16: { title: "order/disorder", prompt: "order and disorder", tech: "grille moitié ordonnée moitié random", note: "" },
+  17: { title: "scottish mosaic", prompt: "wallpaper group", tech: "motif répété", note: "symétrie par translation." },
+  18: { title: "unexpected path", prompt: "unexpected path", tech: "marche aléatoire", note: "" },
+  19: { title: "16x16", prompt: "16x16", tech: "grille stricte", note: "exactement 16 cases sur 16." },
+  20: { title: "AC", prompt: "one line", tech: "ligne continue", note: "le stylo ne se lève jamais." },
+  21: { title: "bauhaus", prompt: "bauhaus poster", tech: "formes plates couleurs primaires", note: "" },
+  22: { title: "ascii map", prompt: "pen plotter ready", tech: "hachures", note: "que des traits, pensé pour un plotter." },
+  23: { title: "glare", prompt: "transparency", tech: "cercles translucides empilés", note: "" },
+  24: { title: "perfectionist's nightmare", prompt: "perfectionist's nightmare", tech: "grille avec du jitter", note: "chaque case decalee d'un poil pour casser l'alignement." },
+  25: { title: "organic geometry", prompt: "organic geometry", tech: "flow field", note: "champ de bruit de perlin, lignes organiques." },
+  26: { title: "recursive grids", prompt: "recursive grids", tech: "récursion type sierpinski", note: "" },
+  27: { title: "lifeform", prompt: "lifeform", tech: "l-system", note: "un arbre qui pousse par règles de remplacement." },
+  28: { title: "tty progressbar", prompt: "no libraries, no canvas, only html elements", tech: "faux dom", note: "reste en p5/canvas, un visuel qui imite des blocs html." },
+  29: { title: "magnetic cells", prompt: "genetic evolution and mutation", tech: "simulation simple", note: "des points qui dérivent vers une cible." },
+  30: { title: "it's not a bug it's a feature", prompt: "it's not a bug, it's a feature", tech: "glitch pixels", note: "lignes de pixels decalees, effet glitch." },
+  31: { title: "glsl day", prompt: "glsl day", tech: "manipulation de pixels", note: "pas un vrai shader, je fais ça à la main avec loadPixels." },
 };
+
+/** Finds a sketch number from a title match in the text (used when there's no digit). */
+function findByTitle(t) {
+  for (const n in SKETCH_INFO) {
+    if (t.includes(SKETCH_INFO[n].title.toLowerCase())) return parseInt(n, 10);
+  }
+  return null;
+}
 
 const DEFAULT_REPLIES = [
   "je n'ai pas compris.",

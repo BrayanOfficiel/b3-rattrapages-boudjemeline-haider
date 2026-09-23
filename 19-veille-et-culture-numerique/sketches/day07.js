@@ -1,4 +1,4 @@
-// genuary prompt 7: boolean algebra
+// #7 venn (prompt: boolean algebra)
 window.sketches[7] = (p) => {
   // two circles, difference blend mode fakes an XOR look
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

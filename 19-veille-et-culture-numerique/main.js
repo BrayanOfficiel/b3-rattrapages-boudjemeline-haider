@@ -34,6 +34,41 @@ const PROMPTS = [
   "glsl day",
 ];
 
+// mes titres perso, affiches dans la grille a la place du prompt officiel
+const TITLES = [
+  "dots",
+  "bounce",
+  "fibonacci forever",
+  "lowres",
+  "genuary",
+  "lights",
+  "venn",
+  "city",
+  "matrix eating amoeba",
+  "magnetic flower",
+  "line count",
+  "boxes only",
+  "portrait",
+  "perfect fit",
+  "ghost",
+  "order/disorder",
+  "scottish mosaic",
+  "unexpected path",
+  "16x16",
+  "AC",
+  "bauhaus",
+  "ascii map",
+  "glare",
+  "perfectionist's nightmare",
+  "organic geometry",
+  "recursive grids",
+  "lifeform",
+  "tty progressbar",
+  "magnetic cells",
+  "it's not a bug it's a feature",
+  "glsl day",
+];
+
 let currentInstance = null;
 
 /** Fills the grid with one cell per genuary day, thumb by default. */
@@ -52,7 +87,7 @@ function buildGrid() {
 
     const label = document.createElement("div");
     label.className = "label";
-    label.textContent = `#${n} ${PROMPTS[n - 1]}`;
+    label.textContent = `#${n} ${TITLES[n - 1]}`;
     cell.appendChild(label);
 
     cell.addEventListener("click", () => openLive(n));
@@ -65,6 +100,7 @@ function openLive(n) {
   const modal = document.getElementById("live-modal");
   const holder = document.getElementById("live-canvas-holder");
   const title = document.getElementById("live-title");
+  const promptLine = document.getElementById("live-prompt");
 
   if (currentInstance) {
     currentInstance.remove();
@@ -78,7 +114,8 @@ function openLive(n) {
     currentInstance = new p5(window.sketches[n], holder);
   }
 
-  title.textContent = `genuary #${n} -- ${PROMPTS[n - 1]}`;
+  title.textContent = `genuary #${n} -- ${TITLES[n - 1]}`;
+  promptLine.textContent = `prompt : ${PROMPTS[n - 1]}`;
   modal.classList.remove("hidden");
 }
 

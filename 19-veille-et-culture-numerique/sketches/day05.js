@@ -1,4 +1,4 @@
-// genuary prompt 5: write "genuary" without a font
+// #5 genuary (prompt: write "genuary" without a font)
 window.sketches[5] = (p) => {
   // each letter is a hand-picked 5x7 grid of rects, no text() call anywhere
   const FONT = {

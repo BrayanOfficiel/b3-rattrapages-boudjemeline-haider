@@ -1,4 +1,4 @@
-// genuary prompt 9: crazy automaton
+// #9 matrix eating amoeba (prompt: crazy automaton)
 window.sketches[9] = (p) => {
   // conway's game of life, random start
   let grid, cols, rows, cell = 10;

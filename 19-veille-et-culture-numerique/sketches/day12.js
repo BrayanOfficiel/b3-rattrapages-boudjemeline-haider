@@ -1,4 +1,4 @@
-// genuary prompt 12: boxes only
+// #12 boxes only (prompt: boxes only)
 window.sketches[12] = (p) => {
   // grid of boxes, size from perlin noise
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); p.noiseSeed(12); };

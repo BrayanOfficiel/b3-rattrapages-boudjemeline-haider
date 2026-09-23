@@ -1,4 +1,4 @@
-// genuary prompt 4: lowres
+// #4 lowres (prompt: lowres)
 window.sketches[4] = (p) => {
   // low res noise grid, big blocky pixels
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); p.noiseSeed(4); };

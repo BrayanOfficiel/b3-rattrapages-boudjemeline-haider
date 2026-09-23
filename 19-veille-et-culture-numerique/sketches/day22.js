@@ -1,4 +1,4 @@
-// genuary prompt 22: pen plotter ready
+// #22 ascii map (prompt: pen plotter ready)
 window.sketches[22] = (p) => {
   // crosshatch shading, only strokes, no fill (plotter friendly)
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); p.noiseSeed(22); };

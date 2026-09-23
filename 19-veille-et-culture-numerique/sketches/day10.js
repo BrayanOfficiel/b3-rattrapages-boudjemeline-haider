@@ -1,4 +1,4 @@
-// genuary prompt 10: polar coordinates
+// #10 magnetic flower (prompt: polar coordinates)
 window.sketches[10] = (p) => {
   // rose curve in polar coords
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

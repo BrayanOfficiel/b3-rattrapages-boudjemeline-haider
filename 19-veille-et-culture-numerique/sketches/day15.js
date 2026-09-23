@@ -1,4 +1,4 @@
-// genuary prompt 15: create an invisible object
+// #15 ghost (prompt: create an invisible object)
 window.sketches[15] = (p) => {
   // only the shadow is drawn, the object itself stays empty
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };

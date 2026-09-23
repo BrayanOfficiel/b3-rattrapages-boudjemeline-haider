@@ -1,4 +1,4 @@
-// genuary prompt 29: genetic evolution and mutation
+// #29 magnetic cells (prompt: genetic evolution and mutation)
 window.sketches[29] = (p) => {
   // toy ga: a population's trait drifts toward a target across generations,
   // plotted left (gen 0) to right (latest gen) so the whole canvas fills up
