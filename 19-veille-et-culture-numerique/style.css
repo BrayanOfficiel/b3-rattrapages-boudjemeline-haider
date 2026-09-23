@@ -50,13 +50,13 @@ a {
 }
 
 .ascii {
-  font-size: 8px;
-  line-height: 1;
+  font-size: 13px;
+  line-height: 1.05;
   white-space: pre;
-  overflow-x: auto;
   color: #b3003a;
   margin: 0 auto 10px;
   max-width: 100%;
+  overflow-x: auto;
 }
 
 .tagline {
@@ -232,6 +232,14 @@ a {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
   .ascii {
-    font-size: 6px;
+    font-size: 5px;
+  }
+  .chatbot-panel {
+    width: calc(100vw - 20px);
+    bottom: 0;
+    right: 0;
+  }
+  .chatbot-log {
+    height: 160px;
   }
 }
