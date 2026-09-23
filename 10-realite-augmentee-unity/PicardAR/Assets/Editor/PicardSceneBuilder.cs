@@ -110,6 +110,9 @@ public static class PicardSceneBuilder
         PlayerSettings.companyName = "IIM";
         PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.iOS, "fr.iim.picardar");
         PlayerSettings.iOS.cameraUsageDescription = "La caméra sert à reconnaître l'affiche du distributeur Picard.";
+        // auto rotation relies on statusBarOrientation, a no-op on iOS 27: the view stays
+        // portrait while ARKit thinks landscape, so the pose is off by 90 deg. Fixed orientation avoids it.
+        PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
         // Unity 6.6 supports iOS 15+, ARKit image tracking with validation needs 13+
         PlayerSettings.iOS.targetOSVersionString = "15.0";
         // ARM64 + Metal are already the defaults on iOS, ARKit needs both
