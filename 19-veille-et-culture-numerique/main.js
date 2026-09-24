@@ -1,4 +1,4 @@
-// grid + live view logic, one sketch running at a time
+// grid + live view, one sketch running at a time
 
 const PROMPTS = [
   "one color, one shape",
@@ -71,7 +71,7 @@ const TITLES = [
 
 let currentInstance = null;
 
-/** Fills the grid with one cell per genuary day, thumb by default. */
+/** fills grid with one cell per day, shows thumb */
 function buildGrid() {
   const grid = document.getElementById("grid");
   for (let n = 1; n <= 31; n++) {
@@ -95,7 +95,7 @@ function buildGrid() {
   }
 }
 
-/** Opens the modal and starts the p5 instance for that day, kills the previous one. */
+/** opens modal and starts p5 for that day, kills old one */
 function openLive(n) {
   const modal = document.getElementById("live-modal");
   const holder = document.getElementById("live-canvas-holder");

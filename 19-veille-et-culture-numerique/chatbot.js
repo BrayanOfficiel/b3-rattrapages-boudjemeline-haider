@@ -105,7 +105,7 @@ const SKETCH_INFO = {
   31: { title: "glsl day", prompt: "glsl day", tech: "manipulation de pixels", note: "pas un vrai shader, je fais ça à la main avec loadPixels." },
 };
 
-/** Finds a sketch number from a title match in the text (used when there's no digit). */
+/** find sketch number from title match in text, used when no digit */
 function findByTitle(t) {
   for (const n in SKETCH_INFO) {
     if (t.includes(SKETCH_INFO[n].title.toLowerCase())) return parseInt(n, 10);

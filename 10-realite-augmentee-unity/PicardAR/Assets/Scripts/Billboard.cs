@@ -1,6 +1,6 @@
 using UnityEngine;
 
-/// <summary>Keeps the panel facing the AR camera, upright.</summary>
+/// <summary>keep panel facing the ar camera</summary>
 public class Billboard : MonoBehaviour
 {
     Transform cam;
@@ -14,7 +14,7 @@ public class Billboard : MonoBehaviour
             cam = Camera.main.transform;
         }
 
-        // same rotation as the camera, so the card is always parallel to the screen
+        // same rotation as camera, card stays parallel to screen
         transform.rotation = cam.rotation;
     }
 }

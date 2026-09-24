@@ -1,7 +1,7 @@
 // #27 lifeform (prompt: lifeform)
 window.sketches[27] = (p) => {
-  // l-system tree, centered and scaled up, with leaf dots at the branch tips
-  // so it reads as something alive and not just a diagram in the corner
+  // l-system tree with leaf dots at branch tips
+  // makes it look alive, not just a diagram
   const rules = { F: "FF+[+F-F-F]-[-F+F+F]" };
   let sentence = "F";
 

@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
 
-/// <summary>iOS 27 workaround: forces portrait and corrects a 90 deg roll between the ARKit pose and the screen.</summary>
-// runs before the EventSystem (order 0), so the UI raycasts and the tap ray use the fixed camera
+/// <summary>ios 27 bug, need 90 deg more, forces portrait</summary>
+// runs before event system so click check uses fixed camera
 [DefaultExecutionOrder(-100)]
 public class OrientationFix : MonoBehaviour
 {
-    // roll added on top of the tracked pose; a two finger tap cycles 0 / 90 / -90 / 180 to find the right one
-    float rollFix = 90f; // not serialized: the scene kept the old 0 otherwise
+    // extra roll on pose, two finger tap cycles 0/90/-90/180
+    float rollFix = 90f; // not serialized, scene kept old 0 otherwise
 
     static readonly float[] Options = { 0f, 90f, -90f, 180f };
     InputAction posAction;
@@ -21,8 +21,8 @@ public class OrientationFix : MonoBehaviour
         Screen.autorotateToPortraitUpsideDown = false;
         Screen.orientation = ScreenOrientation.Portrait;
 
-        // the driver wrote the pose after us and the roll only came in LateUpdate,
-        // so clicks were cast with the wrong camera. We read the same actions ourselves instead.
+        // driver wrote pose after us, wrong camera for clicks
+        // we read the same actions ourselves instead
         var driver = GetComponent<TrackedPoseDriver>();
         if (driver != null)
         {
@@ -51,7 +51,7 @@ public class OrientationFix : MonoBehaviour
         if (posAction == null || rotAction == null)
             return;
         var rot = rotAction.ReadValue<Quaternion>();
-        // all zero until ARKit sends its first pose
+        // all zero until arkit sends first pose
         if (rot.x == 0f && rot.y == 0f && rot.z == 0f && rot.w == 0f)
             return;
         transform.localPosition = posAction.ReadValue<Vector3>();

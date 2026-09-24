@@ -1,7 +1,7 @@
 // #18 unexpected path (prompt: unexpected path)
 window.sketches[18] = (p) => {
-  // walker mostly keeps its heading, but every so often forces a hard random
-  // turn, reads more like a path with surprises than pure random noise
+  // walker keeps heading, sometimes makes a hard random turn
+  // feels like a path with surprises, not just random
   let path = [];
 
   p.setup = () => {

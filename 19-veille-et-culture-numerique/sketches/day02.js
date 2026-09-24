@@ -1,7 +1,7 @@
 // #2 bounce (prompt: twelve principles of animation)
 window.sketches[2] = (p) => {
-  // two balls out of phase, squash on impact, stretch mid-air, plus a shadow
-  // and a ground line so a still frame still reads as a bounce, not a floating dot
+  // balls squash on impact, stretch mid air
+  // shadow and ground line so it still looks like a bounce
   let t = 0;
   const groundY = 360;
 
@@ -13,7 +13,7 @@ window.sketches[2] = (p) => {
     const squash = 1 - Math.abs(Math.cos(localT)) * 0.4;
     const w = size / squash;
     const h = size * squash;
-    // shadow shrinks as the ball climbs, grows flat right before impact
+    // shadow shrinks going up, flat right before impact
     const shadowW = size * (1.3 - (bounce / 300) * 0.7);
     p.noStroke();
     p.fill(255, 255, 255, 30);
@@ -23,12 +23,12 @@ window.sketches[2] = (p) => {
   };
 
   p.draw = () => {
-    // low alpha background leaves a short trail, a still frame still shows motion
+    // low alpha bg leaves a short trail, shows motion
     p.background(15, 15, 25, 55);
     t += 0.045;
     p.stroke(90);
     p.line(0, groundY + 6, 400, groundY + 6);
-    // second and third ball offset in phase, a bit of overlapping action too
+    // balls offset in phase, a bit of overlapping action
     drawBall(110, t + 1.1, 34, p.color(250, 210, 70));
     drawBall(210, t + 0.55, 50, p.color(250, 170, 90));
     drawBall(310, t, 70, p.color(240, 120, 90));

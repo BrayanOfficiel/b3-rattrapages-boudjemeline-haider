@@ -14,7 +14,7 @@ using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-/// <summary>Builds the whole AR scene, the panel prefab and the image library from code, so nothing is hand edited in YAML.</summary>
+/// <summary>builds the ar scene, panel prefab and image library from code</summary>
 public static class PicardSceneBuilder
 {
     const string MarkerPath = "Assets/AR/marker-picard-campus.jpg";
@@ -22,7 +22,7 @@ public static class PicardSceneBuilder
     const string PrefabPath = "Assets/Prefabs/ProductPanel.prefab";
     const string ScenePath = "Assets/Scenes/PicardAR.unity";
 
-    // 15 cm printed marker, must match the paper size or ARKit puts the panels at the wrong depth
+    // 15cm marker, must match paper size or arkit gets depth wrong
     static readonly Vector2 MarkerSizeMeters = new Vector2(0.15f, 0.1875f);
 
     [MenuItem("Picard/Build AR Scene")]
@@ -34,7 +34,7 @@ public static class PicardSceneBuilder
             return;
         }
 
-        // ask before we touch the open scene, the prefab build dirties it
+        // ask before we touch open scene, prefab build changes it
         if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
             return;
 
@@ -92,7 +92,7 @@ public static class PicardSceneBuilder
         var esGo = new GameObject("EventSystem");
         esGo.AddComponent<EventSystem>();
         var module = esGo.AddComponent<InputSystemUIInputModule>();
-        // without this the taps never reach the buttons
+        // without this taps never reach buttons
         module.AssignDefaultActions();
 
         EnsureFolder("Assets/Scenes");
@@ -110,12 +110,12 @@ public static class PicardSceneBuilder
         PlayerSettings.companyName = "IIM";
         PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.iOS, "fr.iim.picardar");
         PlayerSettings.iOS.cameraUsageDescription = "La caméra sert à reconnaître l'affiche du distributeur Picard.";
-        // auto rotation relies on statusBarOrientation, a no-op on iOS 27: the view stays
-        // portrait while ARKit thinks landscape, so the pose is off by 90 deg. Fixed orientation avoids it.
+        // ios 27 bug, auto rotation broken, pose off by 90 deg
+        // fixed orientation avoids it
         PlayerSettings.defaultInterfaceOrientation = UIOrientation.Portrait;
-        // Unity 6.6 supports iOS 15+, ARKit image tracking with validation needs 13+
+        // unity 6.6 needs ios 15+, arkit tracking needs 13+
         PlayerSettings.iOS.targetOSVersionString = "15.0";
-        // ARM64 + Metal are already the defaults on iOS, ARKit needs both
+        // arm64 and metal already default on ios, arkit needs both
         AssetDatabase.SaveAssets();
         Debug.Log("iOS player settings applied. ARKit still has to be ticked in XR Plug-in Management > iOS.");
     }
@@ -129,7 +129,7 @@ public static class PicardSceneBuilder
             return null;
         }
 
-        // ARKit wants the source texture readable and uncompressed
+        // arkit wants texture readable and uncompressed
         var importer = AssetImporter.GetAtPath(MarkerPath) as TextureImporter;
         if (importer != null && (!importer.isReadable || importer.textureCompression != TextureImporterCompression.Uncompressed))
         {
@@ -150,7 +150,7 @@ public static class PicardSceneBuilder
         {
             lib.Add();
             lib.SetName(0, "picard-campus");
-            lib.SetTexture(0, tex, true); // keep texture so XR Simulation can match it
+            lib.SetTexture(0, tex, true); // keep texture so xr simulation can match it
             lib.SetSpecifySize(0, true);
             lib.SetSize(0, MarkerSizeMeters);
             EditorUtility.SetDirty(lib);
@@ -180,7 +180,7 @@ public static class PicardSceneBuilder
         canvasRt.sizeDelta = new Vector2(320f, 300f);
         canvasRt.localScale = Vector3.one * 0.00022f;
 
-        // content grows with the text size (WCAG 1.4.4), the card is not a fixed box
+        // content grows with text size, not a fixed box
         var content = MakeRect("Content", canvasGo.transform);
         var contentRt = content.GetComponent<RectTransform>();
         contentRt.anchorMin = new Vector2(0f, 1f);
@@ -238,7 +238,7 @@ public static class PicardSceneBuilder
         hudGo.AddComponent<GraphicRaycaster>();
         var settings = hudGo.AddComponent<AccessibilitySettings>();
 
-        // hint at the top, dark strip so it stays readable over the camera feed
+        // hint at top, dark strip so its readable over camera
         var hint = MakeRect("Hint", hudGo.transform);
         var hintRt = hint.GetComponent<RectTransform>();
         hintRt.anchorMin = new Vector2(0f, 1f);
@@ -254,7 +254,7 @@ public static class PicardSceneBuilder
         hintText.alignment = TextAlignmentOptions.Center;
         Stretch(hintText.GetComponent<RectTransform>(), 8f);
 
-        // two buttons at the bottom, 56 pt tall (Apple HIG and WCAG 2.5.5 ask for 44 minimum)
+        // two buttons at bottom, 56pt tall for touch size
         var contrast = MakeHudButton(hudGo.transform, "Dark mode", -70f);
         var text = MakeHudButton(hudGo.transform, "Texte 100 %", 70f);
 
@@ -281,7 +281,7 @@ public static class PicardSceneBuilder
 
     static void AddPoseDriver(GameObject camGo)
     {
-        // same bindings as the XR Origin (Mobile AR) menu item
+        // same bindings as xr origin mobile ar menu item
         var pos = new InputAction("Position", InputActionType.Value, expectedControlType: "Vector3");
         pos.AddBinding("<XRHMD>/centerEyePosition");
         pos.AddBinding("<HandheldARInputDevice>/devicePosition");
@@ -297,8 +297,7 @@ public static class PicardSceneBuilder
 
     static void SetLibrary(ARTrackedImageManager manager, XRReferenceImageLibrary lib)
     {
-        // public property first, it is the reliable path (SerializedObject alone left the
-        // manager without a library in a real build once, ARKit started with no detectionImages)
+        // public property first, serializedobject alone failed once in a build
         manager.referenceLibrary = lib;
 
         var so = new SerializedObject(manager);

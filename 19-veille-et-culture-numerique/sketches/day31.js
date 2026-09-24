@@ -1,6 +1,6 @@
 // #31 glsl day (prompt: glsl day)
 window.sketches[31] = (p) => {
-  // no real shader here, loadPixels fakes a per-pixel gradient like a fragment shader would
+  // no real shader, loadPixels fakes a per pixel gradient
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); p.pixelDensity(1); };
   p.draw = () => {
     p.loadPixels();

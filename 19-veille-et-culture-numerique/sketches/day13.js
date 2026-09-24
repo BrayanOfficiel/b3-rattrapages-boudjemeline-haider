@@ -1,7 +1,7 @@
 // #13 portrait (prompt: self portrait)
 window.sketches[13] = (p) => {
-  // ascii portrait: an oval face filled with monospace chars from "HAIDER",
-  // char picked by a brightness map (soft perlin noise + dark eyes/mouth/nose)
+  // ascii portrait, face made from letters of "HAIDER"
+  // picks char based on brightness map
   const CHARS = "HAIDER";
   const cell = 8;
   let cols, rows, t = 0;
@@ -17,7 +17,7 @@ window.sketches[13] = (p) => {
     p.frameRate(6); // slow flicker, not a real animation
   };
 
-  // brightness at a grid cell: 0 dark (background or hole), 1 bright (skin).
+  // brightness of a cell, 0 dark, 1 bright skin
   function brightness(gx, gy) {
     const x = gx * cell + cell / 2;
     const y = gy * cell + cell / 2;
@@ -26,7 +26,7 @@ window.sketches[13] = (p) => {
     const ed = Math.pow((x - cx) / rx, 2) + Math.pow((y - cy) / ry, 2);
     if (ed > 1) return 0; // outside the face, stays background
 
-    // skin: bright with a soft noise wobble, edge fades toward the oval border
+    // skin bright with a noise wobble, fades at the edge
     const edge = 1 - Math.max(0, ed - 0.7) / 0.3;
     let b = (0.8 + (p.noise(x * 0.025, y * 0.025, t) - 0.5) * 0.3) * Math.min(1, edge);
 
@@ -36,7 +36,7 @@ window.sketches[13] = (p) => {
     const dEyeR = Math.pow((x - (cx + 38)) / 20, 2) + Math.pow((y - eyeY) / 12, 2);
     if (dEyeL < 1 || dEyeR < 1) return 0;
 
-    // nose: thin vertical shadow line, dims skin but doesn't punch a hole
+    // nose: thin shadow line, dims skin, no hole
     if (Math.abs(x - cx) < 4 && y > cy - 10 && y < cy + 40) b *= 0.45;
 
     // mouth: dark curved band
@@ -59,6 +59,6 @@ window.sketches[13] = (p) => {
         p.text(CHARS[ci], gx * cell + cell / 2, gy * cell + cell / 2);
       }
     }
-    t += 0.006; // slight scintillation, stays readable as a still face
+    t += 0.006; // small flicker, still reads as a face
   };
 };

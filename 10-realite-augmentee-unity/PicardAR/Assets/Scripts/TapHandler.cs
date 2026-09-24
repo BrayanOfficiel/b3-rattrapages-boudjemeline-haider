@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-/// <summary>Tap on a card body toggles its focus mode. Buttons are handled by the UI module, not here.</summary>
-// runs after the EventSystem so IsPointerOverGameObject sees this frame's touch
+/// <summary>tap on card body toggles focus, buttons handled elsewhere</summary>
+// runs after event system so pointer check sees this touch
 [DefaultExecutionOrder(100)]
 public class TapHandler : MonoBehaviour
 {

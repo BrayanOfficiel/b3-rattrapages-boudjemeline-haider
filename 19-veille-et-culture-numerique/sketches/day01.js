@@ -1,6 +1,6 @@
 // #1 dots (prompt: one color, one shape)
 window.sketches[1] = (p) => {
-  // grid of circles, single color, size driven by distance from center
+  // grid of circles, size based on distance from center
   p.setup = () => {
     p.createCanvas(400, 400);
     p.noLoop();

@@ -1,6 +1,6 @@
 // #5 genuary (prompt: write "genuary" without a font)
 window.sketches[5] = (p) => {
-  // each letter is a hand-picked 5x7 grid of rects, no text() call anywhere
+  // each letter is a 5x7 grid of rects, no text() used
   const FONT = {
     G: ["01111", "10000", "10000", "10111", "10001", "10001", "01111"],
     E: ["11111", "10000", "10000", "11110", "10000", "10000", "11111"],
@@ -44,7 +44,7 @@ window.sketches[5] = (p) => {
     if (revealed < blocks.length) revealed++;
     for (let i = 0; i < revealed; i++) {
       const b = blocks[i];
-      // once a block has been up a while it gets a tiny vibration, keeps it alive
+      // older blocks get a tiny vibration, keeps them alive
       const settled = i < revealed - 6;
       const jitter = settled ? Math.sin(p.frameCount * 0.15 + b.seed) * 0.8 : 0;
       p.noStroke();

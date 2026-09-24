@@ -1,7 +1,7 @@
 // #28 tty progressbar (prompt: no libraries, no canvas, only html elements)
 window.sketches[28] = (p) => {
-  // can't drop p5 entirely here since every day needs the same sketch shape,
-  // so this fakes the "no canvas" spirit with flat divs drawn as plain rects (no gradients, no images)
+  // cant drop p5 here, every day needs the same shape
+  // fakes no canvas look with flat rects, no gradients
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };
   p.draw = () => {
     p.background(255);

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>World space card for one product, with a focus mode (bigger, allergens in full) on tap.</summary>
+/// <summary>card for one product, focus mode shows more on tap</summary>
 public class ProductPanel : MonoBehaviour
 {
     // only one card in focus at a time
@@ -30,7 +30,7 @@ public class ProductPanel : MonoBehaviour
 
     void Awake()
     {
-        // world space canvas needs the AR camera for the graphic raycaster
+        // world space canvas needs ar camera for click check
         if (canvas != null && canvas.worldCamera == null)
             canvas.worldCamera = Camera.main;
 
@@ -68,7 +68,7 @@ public class ProductPanel : MonoBehaviour
         current = this;
         focused = true;
 
-        // local Y of the tracked image is its normal, so "up" here means towards the user
+        // local y is the image normal, up means toward user
         transform.localPosition = restPosition + Vector3.up * focusLift;
         Haptic();
         Render();
@@ -95,7 +95,7 @@ public class ProductPanel : MonoBehaviour
         float textScale = a11y != null ? a11y.TextScale : 1f;
         bool story = a11y != null && a11y.StoryMode;
 
-        // the whole card scales up now, base font sizes stay fixed
+        // whole card scales up, font size stays fixed
         title.fontSize = BaseTitleSize;
         body.fontSize = BaseBodySize;
         detail.fontSize = BaseBodySize;
@@ -105,7 +105,7 @@ public class ProductPanel : MonoBehaviour
 
         if (story)
         {
-            // coulisses mode: where it comes from and one line on how it's made
+            // story mode: origin and how its made
             body.text = "Origine : " + data.origin;
             detail.text = data.story;
         }
@@ -116,7 +116,7 @@ public class ProductPanel : MonoBehaviour
 
             if (focused)
             {
-                // the point of focus mode: allergens readable from one meter away
+                // focus mode, allergens readable from far
                 detail.text = "Allergènes : " + data.AllergensLine()
                     + "\nOrigine : " + data.origin
                     + "\nÀ consommer sous " + data.dlcDays + " j";

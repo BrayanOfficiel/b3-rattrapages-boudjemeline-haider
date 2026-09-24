@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 
-/// <summary>Hard coded products of the day. A real app would pull this from the vending machine API.</summary>
+/// <summary>hard coded products, real app would load from the api</summary>
 public static class ProductCatalog
 {
-    // "oeuf" without the ligature: the default TMP font atlas has no œ glyph
+    // oeuf without the œ, font cant show that letter
     public static readonly List<ProductData> Products = new List<ProductData>
     {
         new ProductData(

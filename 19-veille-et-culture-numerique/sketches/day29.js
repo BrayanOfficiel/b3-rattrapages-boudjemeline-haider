@@ -1,6 +1,6 @@
 // #29 magnetic cells (prompt: genetic evolution and mutation)
 window.sketches[29] = (p) => {
-  // dots evolve toward a target point over generations, simple ga-like drift
+  // dots drift toward a target point, simple ga-like feel
   let pop = [];
   const target = { x: 320, y: 80 };
   p.setup = () => {

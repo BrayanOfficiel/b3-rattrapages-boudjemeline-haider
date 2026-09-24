@@ -1,6 +1,6 @@
 // #14 perfect fit (prompt: everything fits perfectly)
 window.sketches[14] = (p) => {
-  // recursive rectangle subdivision (BSP), tight packing
+  // splits rectangles recursively (bsp), tight fit
   p.setup = () => { p.createCanvas(400, 400); p.noLoop(); };
   const split = (x, y, w, h, depth) => {
     if (depth <= 0 || w < 20 || h < 20) {

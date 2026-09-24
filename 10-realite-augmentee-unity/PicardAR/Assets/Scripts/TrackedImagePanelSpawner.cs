@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
-/// <summary>Spawns the product panels in an arc above the Picard marker once it is tracked.</summary>
+/// <summary>spawns product panels above the marker once tracked</summary>
 public class TrackedImagePanelSpawner : MonoBehaviour
 {
     [SerializeField] ARTrackedImageManager imageManager;
     [SerializeField] GameObject panelPrefab;
     [SerializeField] GameObject hint;
-    // poster is vertical on a wall, cards sit in a row above it, not flat on top of it
+    // poster is vertical, cards sit in a row above it
     [SerializeField] float spacing = 0.08f;
     [SerializeField] float liftFromMarker = 0.03f;
     [SerializeField] float heightAboveMarker = 0.14f;
@@ -31,8 +31,8 @@ public class TrackedImagePanelSpawner : MonoBehaviour
         foreach (var image in args.added)
             Spawn(image);
 
-        // ARKit keeps the trackable but drops to Limited when the poster leaves the frame,
-        // without this the panels stay stuck in the air at the last known pose
+        // arkit keeps trackable but drops to limited when poster leaves frame
+        // without this panels stay stuck at last position
         foreach (var image in args.updated)
         {
             if (roots.TryGetValue(image.trackableId, out var root))
@@ -54,7 +54,7 @@ public class TrackedImagePanelSpawner : MonoBehaviour
         UpdateHint();
     }
 
-    // hint only makes sense before the poster is found, hide it once we have a lock
+    // hint only needed before poster is found
     void UpdateHint()
     {
         if (hint == null)
@@ -72,8 +72,8 @@ public class TrackedImagePanelSpawner : MonoBehaviour
         hint.SetActive(!anyTracking);
     }
 
-    // ARKit reports the poster rotated depending on how it was printed, so we ignore its axes:
-    // the root keeps the poster position but faces the camera with world up
+    // arkit gives weird rotation depending on how it was printed, so ignore it
+    // root keeps the poster position but faces camera with world up
     void AlignRoot(Transform root)
     {
         var cam = Camera.main;
@@ -96,12 +96,12 @@ public class TrackedImagePanelSpawner : MonoBehaviour
         roots[image.trackableId] = root;
         AlignRoot(root.transform);
 
-        // root is aligned on the world: X = right, Y = up, Z = away from the user
+        // root aligned on world, x right, y up, z away from user
         var products = ProductCatalog.Products;
         for (int i = 0; i < products.Count; i++)
         {
             float t = products.Count == 1 ? 0.5f : (float)i / (products.Count - 1);
-            // straight row, 8 cm between card centers (cards are 7 cm wide)
+            // straight row, 8cm between card centers
             float x = (t - 0.5f) * spacing * (products.Count - 1);
             var localPos = new Vector3(x, heightAboveMarker, -liftFromMarker);
 

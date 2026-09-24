@@ -1,6 +1,6 @@
 using System;
 
-/// <summary>One frozen product shown on a floating panel.</summary>
+/// <summary>one product shown on a panel</summary>
 [Serializable]
 public class ProductData
 {
@@ -23,7 +23,7 @@ public class ProductData
         this.story = story;
     }
 
-    /// <summary>Allergens as one readable line, "aucun" when the list is empty.</summary>
+    /// <summary>allergens as one line, aucun if empty</summary>
     public string AllergensLine()
     {
         if (allergens == null || allergens.Length == 0)
