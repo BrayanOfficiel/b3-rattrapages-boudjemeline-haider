@@ -10,8 +10,8 @@
 
 #define LED_PIN 2       // blue LED on the DevKit
 #define DHT_PIN 4       // DHT11 module S pin, the 10k pull-up is already on the module
-#define TRIG_PIN 5      // HC-SR04 trig, 3.3 V is enough to trigger it
-#define ECHO_PIN 18     // HC-SR04 echo through a 1k / 2k divider, the echo is 5 V
+#define TRIG_PIN 5      // HC-SR04 trig
+#define ECHO_PIN 18     // HC-SR04 echo, straight from the module (5 V), a 1k/2k divider would be cleaner
 
 const unsigned long WIFI_TIMEOUT_MS = 15000;
 const unsigned long WIFI_RETRY_MS = 20000;
