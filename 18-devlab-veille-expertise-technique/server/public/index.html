@@ -33,8 +33,8 @@
       <div class="col-md-4">
         <div class="card">
           <div class="card-body">
-            <div class="text-muted small">Dernière mesure</div>
-            <div class="fs-5" id="when">--</div>
+            <div class="text-muted small">Signal</div>
+            <div class="display-6" id="signal">--</div>
             <div class="text-muted small" id="meta"></div>
           </div>
         </div>
@@ -60,10 +60,25 @@
 
     let list = [];
 
+    // wifi level, -70 is about where it starts to drop posts
+    function signalLabel(rssi) {
+      if (rssi === null || rssi === undefined) return '--';
+      if (rssi >= -60) return 'fort';
+      if (rssi >= -75) return 'moyen';
+      return 'faible';
+    }
+
+    function ago(iso) {
+      const s = Math.max(0, Math.round((Date.now() - new Date(iso)) / 1000));
+      if (s < 60) return s + ' s';
+      if (s < 3600) return Math.floor(s / 60) + ' min';
+      return Math.floor(s / 3600) + ' h';
+    }
+
     function render() {
       if (list.length === 0) {
         document.getElementById('rows').innerHTML = '';
-        ['temp', 'door', 'when'].forEach((id) => { document.getElementById(id).textContent = '--'; });
+        ['temp', 'door', 'signal'].forEach((id) => { document.getElementById(id).textContent = '--'; });
         document.getElementById('door').className = 'display-6';
         document.getElementById('hum').textContent = '';
         document.getElementById('dist').textContent = '';
@@ -78,8 +93,8 @@
       const door = document.getElementById('door');
       door.textContent = last.door_open ? 'ouverte' : 'fermée';
       door.className = 'display-6 ' + (last.door_open ? 'text-danger' : 'text-success');
-      document.getElementById('when').textContent = fmtDate(last.received_at);
-      document.getElementById('meta').textContent = last.device + ', rssi ' + last.rssi + ' dBm';
+      document.getElementById('signal').textContent = signalLabel(last.rssi);
+      document.getElementById('meta').textContent = 'rssi ' + last.rssi + ' dBm, dernière mesure il y a ' + ago(last.received_at);
 
       document.getElementById('rows').innerHTML = list.map((r) => `
         <tr>
@@ -113,6 +128,8 @@
     });
 
     load();
+    // keep the "il y a" text moving between two posts
+    setInterval(() => { if (list.length) document.getElementById('meta').textContent = 'rssi ' + list[0].rssi + ' dBm, dernière mesure il y a ' + ago(list[0].received_at); }, 1000);
   </script>
 </body>
 </html>
