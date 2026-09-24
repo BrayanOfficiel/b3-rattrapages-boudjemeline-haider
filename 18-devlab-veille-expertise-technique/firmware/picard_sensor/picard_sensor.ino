@@ -111,6 +111,8 @@ bool postReading(const Reading &r) {
 
   HTTPClient http;
   http.begin(SERVER_URL);
+  http.setReuse(false);
+  http.setConnectTimeout(1000);
   http.addHeader("Content-Type", "application/json");
   http.setTimeout(2000);  // weak wifi, dont block the loop too long
   int code = http.POST(body);
@@ -132,13 +134,12 @@ void bufferReading(const Reading &r) {
   buf[bufCount++] = r;
 }
 
-/** send buffered readings oldest first, stop on fail */
-void flushBuffer() {
-  while (bufCount > 0) {
-    if (!postReading(buf[0])) return;
-    for (int i = 1; i < bufCount; i++) buf[i - 1] = buf[i];
-    bufCount--;
-  }
+/** send one buffered reading, the oldest, drop it if it went */
+void flushOne() {
+  if (bufCount == 0) return;
+  if (!postReading(buf[0])) return;
+  for (int i = 1; i < bufCount; i++) buf[i - 1] = buf[i];
+  bufCount--;
 }
 
 void setup() {
@@ -167,10 +168,11 @@ void loop() {
     // dht11 gives nan on fail, sent as null
     Reading r = { dht.readTemperature(), dht.readHumidity(), dist, doorOpen, millis() / 1000 };
 
-    flushBuffer();  // old readings first so server keeps the order
+    // fresh reading first, one old one after, so a bad post dont block the next read
     if (postReading(r)) {
       digitalWrite(LED_PIN, LOW);  // quick blink to see it sent
       delay(80);
+      flushOne();
     } else {
       bufferReading(r);
       Serial.print("buffered, count=");
