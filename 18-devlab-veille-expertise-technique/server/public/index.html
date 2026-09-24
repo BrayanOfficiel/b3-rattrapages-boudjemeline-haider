@@ -41,13 +41,16 @@
       </div>
     </div>
 
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <span class="text-muted">Historique</span>
+      <button class="btn btn-outline-danger btn-sm" id="clear" title="Vider l'historique">&#128465;</button>
+    </div>
     <table class="table table-sm table-striped bg-white">
       <thead>
         <tr><th>Reçu</th><th>Machine</th><th>Temp (°C)</th><th>Hum. (%)</th><th>Porte</th><th>Distance (cm)</th><th>RSSI</th><th>Uptime</th></tr>
       </thead>
       <tbody id="rows"></tbody>
     </table>
-    <p class="text-muted small">Rafraîchi toutes les 10 s.</p>
   </div>
 
   <script>
@@ -55,10 +58,18 @@
     const fmtNum = (v) => (v === null || v === undefined) ? 'n/a' : v;
     const fmtDate = (iso) => new Date(iso).toLocaleTimeString('fr-FR');
 
-    async function refresh() {
-      const res = await fetch('/api/readings');
-      const list = await res.json();
-      if (list.length === 0) return;
+    let list = [];
+
+    function render() {
+      if (list.length === 0) {
+        document.getElementById('rows').innerHTML = '';
+        ['temp', 'door', 'when'].forEach((id) => { document.getElementById(id).textContent = '--'; });
+        document.getElementById('door').className = 'display-6';
+        document.getElementById('hum').textContent = '';
+        document.getElementById('dist').textContent = '';
+        document.getElementById('meta').textContent = '';
+        return;
+      }
 
       const last = list[0];
       document.getElementById('temp').textContent = fmtTemp(last.temp_c);
@@ -83,8 +94,25 @@
         </tr>`).join('');
     }
 
-    refresh();
-    setInterval(refresh, 10000);
+    async function load() {
+      list = await fetch('/api/readings').then((r) => r.json());
+      render();
+    }
+
+    // the server pushes each POST from the board, no polling
+    new EventSource('/api/stream').onmessage = (e) => {
+      list.unshift(JSON.parse(e.data));
+      list = list.slice(0, 50);
+      render();
+    };
+
+    document.getElementById('clear').addEventListener('click', async () => {
+      await fetch('/api/readings', { method: 'DELETE' });
+      list = [];
+      render();
+    });
+
+    load();
   </script>
 </body>
 </html>
