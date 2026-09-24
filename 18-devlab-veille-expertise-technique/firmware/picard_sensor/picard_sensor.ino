@@ -31,6 +31,7 @@ Reading buf[BUF_SIZE];
 int bufCount = 0;
 
 unsigned long lastRead = 0;
+bool doorOpen = false;
 unsigned long lastWifiTry = 0;
 
 /** wait for wifi or timeout, blink led while waiting */
@@ -110,7 +111,7 @@ bool postReading(const Reading &r) {
   HTTPClient http;
   http.begin(SERVER_URL);
   http.addHeader("Content-Type", "application/json");
-  http.setTimeout(5000);
+  http.setTimeout(2000);  // weak wifi, dont block the loop too long
   int code = http.POST(body);
   http.end();
 
@@ -160,10 +161,10 @@ void loop() {
   if (millis() - lastRead >= READ_INTERVAL_MS || lastRead == 0) {
     lastRead = millis();
     float dist = readDistanceCm();
-    // no echo means nothing in front, door is open
-    bool open = isnan(dist) || dist > DOOR_OPEN_CM;
+    // no echo = too close (under 2cm) or too far, so keep the last state
+    if (!isnan(dist)) doorOpen = dist > DOOR_OPEN_CM;
     // dht11 gives nan on fail, sent as null
-    Reading r = { dht.readTemperature(), dht.readHumidity(), dist, open, millis() / 1000 };
+    Reading r = { dht.readTemperature(), dht.readHumidity(), dist, doorOpen, millis() / 1000 };
 
     flushBuffer();  // old readings first so server keeps the order
     if (postReading(r)) {
