@@ -43,7 +43,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-2">
       <span class="text-muted">Historique</span>
-      <button class="btn btn-outline-danger btn-sm" id="clear" title="Vider l'historique">&#128465;</button>
+      <button class="btn btn-outline-danger btn-sm" id="clear">Supprimer</button>
     </div>
     <table class="table table-sm table-striped bg-white">
       <thead>
@@ -99,7 +99,7 @@
       render();
     }
 
-    // the server pushes each POST from the board, no polling
+    // server pushes each post from the board, no polling
     new EventSource('/api/stream').onmessage = (e) => {
       list.unshift(JSON.parse(e.data));
       list = list.slice(0, 50);

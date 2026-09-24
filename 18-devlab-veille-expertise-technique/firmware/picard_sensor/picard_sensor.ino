@@ -1,23 +1,21 @@
-// Picard vending machine sensor node
-// ESP32 DevKit V1, DHT11 (temperature + humidity) and HC-SR04 in front of the service door.
-// Reads every 10 s and posts a JSON line to the server over Wi-Fi.
-// LED: blinking = connecting, on = Wi-Fi up, short off = reading sent.
+// picard vending machine sensor node
+// esp32 + dht11 + hc-sr04, sends readings over wifi every 10s
 
 #include <WiFi.h>
 #include <HTTPClient.h>
 #include <DHT.h>
 #include "config.h"
 
-#define LED_PIN 2       // blue LED on the DevKit
-#define DHT_PIN 4       // DHT11 module S pin, the 10k pull-up is already on the module
-#define TRIG_PIN 5      // HC-SR04 trig
-#define ECHO_PIN 18     // HC-SR04 echo, straight from the module (5 V), a 1k/2k divider would be cleaner
+#define LED_PIN 2       // blue led on the board
+#define DHT_PIN 4       // dht11 data pin, pull-up already on module
+#define TRIG_PIN 5      // hc-sr04 trig
+#define ECHO_PIN 18     // hc-sr04 echo, no divider, could add one later
 
 const unsigned long WIFI_TIMEOUT_MS = 15000;
 const unsigned long WIFI_RETRY_MS = 20000;
 const unsigned long READ_INTERVAL_MS = 10000;
-const int BUF_SIZE = 40;          // about 7 min of readings kept in RAM when offline
-const float DOOR_OPEN_CM = 15.0;  // door shut = a few cm in front of the sensor
+const int BUF_SIZE = 40;          // about 7 min of readings kept in ram
+const float DOOR_OPEN_CM = 15.0;  // door closed is a few cm from sensor
 
 DHT dht(DHT_PIN, DHT11);
 
@@ -35,7 +33,7 @@ int bufCount = 0;
 unsigned long lastRead = 0;
 unsigned long lastWifiTry = 0;
 
-/** Block until Wi-Fi is up or the timeout passes, blinking the LED meanwhile. */
+/** wait for wifi or timeout, blink led while waiting */
 bool connectWifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -57,7 +55,7 @@ bool connectWifi() {
   return true;
 }
 
-/** One ping, NAN when nothing comes back within 30 ms (about 5 m). */
+/** one ping, nan if nothing back in 30ms */
 float pingCm() {
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
@@ -66,10 +64,10 @@ float pingCm() {
   digitalWrite(TRIG_PIN, LOW);
   unsigned long us = pulseIn(ECHO_PIN, HIGH, 30000);
   if (us == 0) return NAN;
-  return us / 58.0;  // datasheet formula, us / 58 = cm
+  return us / 58.0;  // datasheet formula for cm
 }
 
-/** Median of 3 pings, 60 ms apart as the datasheet asks, NAN if none came back. */
+/** median of 3 pings, 60ms apart, nan if none work */
 float readDistanceCm() {
   float d[3];
   int n = 0;
@@ -86,13 +84,13 @@ float readDistanceCm() {
   return d[n / 2];
 }
 
-/** Write a float or null in the JSON. */
+/** write float or null for json */
 void fmtNum(char *out, size_t len, float v, int decimals) {
   if (isnan(v)) snprintf(out, len, "null");
   else snprintf(out, len, "%.*f", decimals, v);
 }
 
-/** Write the JSON body by hand, 7 fields is not worth pulling ArduinoJson in. */
+/** build json by hand, not worth a library for 7 fields */
 void buildJson(char *out, size_t len, const Reading &r) {
   char t[12], h[12], d[12];
   fmtNum(t, sizeof(t), r.tempC, 1);
@@ -103,7 +101,7 @@ void buildJson(char *out, size_t len, const Reading &r) {
            DEVICE_ID, t, h, r.doorOpen ? "true" : "false", d, WiFi.RSSI(), r.uptimeS);
 }
 
-/** POST one reading, true on a 2xx answer. */
+/** post one reading, true if server answers 2xx */
 bool postReading(const Reading &r) {
   if (WiFi.status() != WL_CONNECTED) return false;
   char body[220];
@@ -123,7 +121,7 @@ bool postReading(const Reading &r) {
   return code >= 200 && code < 300;
 }
 
-/** Keep a reading for later, drop the oldest one when full. */
+/** keep reading for later, drop oldest one if full */
 void bufferReading(const Reading &r) {
   if (bufCount == BUF_SIZE) {
     for (int i = 1; i < BUF_SIZE; i++) buf[i - 1] = buf[i];
@@ -132,7 +130,7 @@ void bufferReading(const Reading &r) {
   buf[bufCount++] = r;
 }
 
-/** Send buffered readings oldest first, stop at the first failure. */
+/** send buffered readings oldest first, stop on fail */
 void flushBuffer() {
   while (bufCount > 0) {
     if (!postReading(buf[0])) return;
@@ -162,14 +160,14 @@ void loop() {
   if (millis() - lastRead >= READ_INTERVAL_MS || lastRead == 0) {
     lastRead = millis();
     float dist = readDistanceCm();
-    // no echo at all = nothing in front, so the door is open
+    // no echo means nothing in front, door is open
     bool open = isnan(dist) || dist > DOOR_OPEN_CM;
-    // DHT11 gives NAN when the read fails, sent as null
+    // dht11 gives nan on fail, sent as null
     Reading r = { dht.readTemperature(), dht.readHumidity(), dist, open, millis() / 1000 };
 
-    flushBuffer();  // older readings go first so the server keeps the order
+    flushBuffer();  // old readings first so server keeps the order
     if (postReading(r)) {
-      digitalWrite(LED_PIN, LOW);  // quick blink so you can see it sent
+      digitalWrite(LED_PIN, LOW);  // quick blink to see it sent
       delay(80);
     } else {
       bufferReading(r);
@@ -177,6 +175,6 @@ void loop() {
       Serial.println(bufCount);
     }
   }
-  // TODO deep sleep between reads if this ever runs on battery
+  // todo deep sleep between reads if on battery
   delay(100);
 }

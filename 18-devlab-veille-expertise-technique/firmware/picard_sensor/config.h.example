@@ -1,4 +1,4 @@
-// Copy to config.h and fill in. config.h is gitignored.
+// copy to config.h and fill in, config.h is gitignored
 #define WIFI_SSID "my-wifi"
 #define WIFI_PASS "my-password"
 #define SERVER_URL "http://192.168.1.20:3000/api/readings"
