@@ -10,7 +10,7 @@ const analyzeBtn = document.getElementById('analyze');
 const resetBtn = document.getElementById('reset');
 const results = document.getElementById('results');
 
-// what the classifier will look at (img, video or canvas)
+// what the classifier looks at (img, video or canvas)
 let source = null;
 let stream = null;
 let classifier = null;
@@ -19,13 +19,13 @@ let modelReady = false;
 
 const READY_MSG = 'Modele chargé';
 
-/** Update the status banner, type is a Bootstrap alert color. */
+/** update status text, type is bootstrap alert color */
 function setStatus(text, type) {
   status.textContent = text;
   status.className = `alert alert-${type} text-center fs-4`;
 }
 
-/** Load the model once, reuse it after. */
+/** load the model one time, reuse after */
 async function init() {
   const config = await fetch('/config').then((r) => r.json());
   minConfidence = config.minConfidence;
@@ -35,7 +35,7 @@ async function init() {
     return;
   }
 
-  // ml5 1.x without p5: imageClassifier() gives back a promise of the instance
+  // ml5 1.x no p5, this gives a promise of the instance
   try {
     classifier = await ml5.imageClassifier('MobileNet');
     if (classifier.ready) await classifier.ready;
@@ -49,7 +49,7 @@ async function init() {
   if (source) analyzeBtn.disabled = false;
 }
 
-/** Show one element in the preview zone, hide the others (null hides the zone). */
+/** show one element, hide the rest, null hides zone */
 function showInPreview(el) {
   [photo, cam, frame].forEach((node) => { node.hidden = node !== el; });
   preview.hidden = !el;
@@ -59,7 +59,7 @@ fileInput.addEventListener('change', () => {
   const file = fileInput.files[0];
   if (!file) return;
 
-  // TODO stop the webcam if the user picks a file while it runs
+  // todo stop webcam if user picks a file while it runs
   analyzeBtn.disabled = true;
   photo.onload = () => {
     source = photo;
@@ -73,7 +73,7 @@ webcamBtn.addEventListener('click', async () => {
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
   } catch (err) {
-    // NotAllowedError most of the time, or no camera at all
+    // usually no permission, or no camera at all
     setStatus('Webcam refusée ou introuvable, essayez avec une image.', 'danger');
     return;
   }
@@ -83,7 +83,7 @@ webcamBtn.addEventListener('click', async () => {
   captureBtn.hidden = false;
 });
 
-// freeze the current frame in the canvas, that is what gets analyzed
+// freeze frame in the canvas, this is what gets analyzed
 captureBtn.addEventListener('click', () => {
   frame.width = cam.videoWidth;
   frame.height = cam.videoHeight;
@@ -95,12 +95,12 @@ captureBtn.addEventListener('click', () => {
   analyzeBtn.disabled = !modelReady;
 });
 
-/** MobileNet labels look like "ice lolly, ice cream, popsicle", keep the first one. */
+/** mobilenet label has commas, just keep the first word */
 function cleanLabel(label) {
   return label.split(',')[0].trim();
 }
 
-/** Render the top results as Bootstrap progress bars. */
+/** show top results as progress bars */
 function showResults(list) {
   results.innerHTML = '';
 
@@ -127,7 +127,7 @@ analyzeBtn.addEventListener('click', async () => {
   analyzeBtn.disabled = true;
   setStatus('Analyse...', 'info');
 
-  // classify() returns a promise in ml5 1.x, 3 results by default (topk)
+  // classify returns a promise, top 3 results by default
   let raw;
   try {
     raw = await classifier.classify(source);
@@ -142,16 +142,16 @@ analyzeBtn.addEventListener('click', async () => {
 
   showResults(top);
 
-  // below the threshold we still show the results, but greyed out
+  // still show results below threshold, just greyed out
   const unsure = top[0].confidence < minConfidence;
   results.classList.toggle('results-low', unsure);
   setStatus(unsure ? 'Terminé, peu fiable, essayez une autre image ou un meilleur éclairage.' : 'Terminé', unsure ? 'warning' : 'success');
   analyzeBtn.disabled = false;
 });
 
-/** Back to the initial state, ready for another image. */
+/** reset everything for a new image */
 function reset() {
-  // the camera light stays on otherwise
+  // camera light stays on if we dont stop it
   if (stream) {
     stream.getTracks().forEach((t) => t.stop());
     stream = null;
@@ -168,7 +168,7 @@ function reset() {
   captureBtn.hidden = true;
   analyzeBtn.disabled = true;
 
-  // keep the loading / error banner if the model is not there yet
+  // keep error message if model not ready yet
   if (modelReady) setStatus(READY_MSG, 'success');
 }
 

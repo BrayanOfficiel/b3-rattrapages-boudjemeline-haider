@@ -13,12 +13,12 @@ const MIME = {
   '.svg': 'image/svg+xml',
 };
 
-/** Send a file from /public, 404 if it does not exist. */
+/** send file from /public, 404 if not found */
 function serveStatic(reqPath, res) {
   const file = reqPath === '/' ? '/index.html' : reqPath;
   const fullPath = path.join(PUBLIC_DIR, file);
 
-  // no ../ tricks
+  // block ../ tricks
   if (!fullPath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403);
     return res.end();
@@ -37,7 +37,7 @@ function serveStatic(reqPath, res) {
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  // the front reads the threshold here, so it can change without touching the code
+  // front reads threshold here, change without touching code
   if (url.pathname === '/config') {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     return res.end(JSON.stringify({ minConfidence: MIN_CONFIDENCE }));

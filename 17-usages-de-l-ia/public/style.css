@@ -20,7 +20,7 @@ body {
   max-height: 480px;
 }
 
-/* my display rules must not beat the hidden attribute */
+/* make sure hidden always wins over display */
 [hidden] {
   display: none !important;
 }
