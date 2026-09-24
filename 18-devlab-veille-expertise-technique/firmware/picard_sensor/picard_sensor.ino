@@ -37,6 +37,7 @@ unsigned long lastWifiTry = 0;
 /** wait for wifi or timeout, blink led while waiting */
 bool connectWifi() {
   WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);  // no modem sleep, it makes 2-3s holes in the posts
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   Serial.print("wifi: connecting");
   unsigned long start = millis();
