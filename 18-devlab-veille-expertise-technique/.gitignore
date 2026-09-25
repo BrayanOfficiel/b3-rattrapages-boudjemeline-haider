@@ -9,3 +9,5 @@ fusion/*
 !fusion/*.f3d
 !fusion/*.png
 !fusion/*.jpg
+!fusion/*.step
+!fusion/*.3mf
