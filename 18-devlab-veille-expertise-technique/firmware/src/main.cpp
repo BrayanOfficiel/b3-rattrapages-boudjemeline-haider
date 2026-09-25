@@ -1,5 +1,6 @@
+#include <Arduino.h>
 // picard vending machine sensor node
-// esp32 + dht11 + hc-sr04, sends readings over wifi every 10s
+// esp32 + dht11 + hc-sr04, sends readings over wifi every 2s
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -13,8 +14,8 @@
 
 const unsigned long WIFI_TIMEOUT_MS = 15000;
 const unsigned long WIFI_RETRY_MS = 20000;
-const unsigned long READ_INTERVAL_MS = 10000;
-const int BUF_SIZE = 40;          // about 7 min of readings kept in ram
+const unsigned long READ_INTERVAL_MS = 2000;
+const int BUF_SIZE = 40;          // readings kept in ram when the post fails
 const float DOOR_OPEN_CM = 15.0;  // door closed is a few cm from sensor
 
 DHT dht(DHT_PIN, DHT11);
