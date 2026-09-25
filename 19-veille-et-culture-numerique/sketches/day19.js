@@ -1,4 +1,4 @@
-// #19 16x16 (prompt: 16x16)
+// #19 spooky (prompt: 16x16)
 window.sketches[19] = (p) => {
   // hand drawn 16x16 sprite, 0 = empty, 1/2/3 = colors
   const ghostA = [
