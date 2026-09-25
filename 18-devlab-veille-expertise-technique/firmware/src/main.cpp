@@ -135,12 +135,12 @@ void bufferReading(const Reading &r) {
   buf[bufCount++] = r;
 }
 
-/** send one buffered reading, the oldest, drop it if it went */
-void flushOne() {
-  if (bufCount == 0) return;
-  if (!postReading(buf[0])) return;
-  for (int i = 1; i < bufCount; i++) buf[i - 1] = buf[i];
-  bufCount--;
+/** send all buffered readings, oldest first, stop at the first fail */
+void flushBuffer() {
+  int sent = 0;
+  while (sent < bufCount && postReading(buf[sent])) sent++;
+  for (int i = sent; i < bufCount; i++) buf[i - sent] = buf[i];
+  bufCount -= sent;
 }
 
 void setup() {
@@ -169,11 +169,11 @@ void loop() {
     // dht11 gives nan on fail, sent as null
     Reading r = { dht.readTemperature(), dht.readHumidity(), dist, doorOpen, millis() / 1000 };
 
-    // fresh reading first, one old one after, so a bad post dont block the next read
+    // fresh reading first, then the buffer if the server is back
     if (postReading(r)) {
       digitalWrite(LED_PIN, LOW);  // quick blink to see it sent
       delay(80);
-      flushOne();
+      flushBuffer();
     } else {
       bufferReading(r);
       Serial.print("buffered, count=");
