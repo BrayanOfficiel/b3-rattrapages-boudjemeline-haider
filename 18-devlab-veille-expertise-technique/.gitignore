@@ -4,3 +4,7 @@ firmware/picard_sensor/config.h
 .DS_Store
 __pycache__/
 .vscode/
+fusion/*
+!fusion/*.f3d
+!fusion/*.png
+!fusion/*.jpg
