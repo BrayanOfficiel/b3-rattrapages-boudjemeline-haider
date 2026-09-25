@@ -23,3 +23,8 @@ PicardAR/iOSBuild/
 
 # mac
 .DS_Store
+PicardAR/Assets/UnityXRContent/
+PicardAR/Assets/UnityXRContent.meta
+PicardAR/ContentPackages/
+PicardAR/Assets/Simulation Environment.prefab
+PicardAR/Assets/Simulation Environment.prefab.meta
