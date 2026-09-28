@@ -43,7 +43,7 @@ Boîtier 90 x 66 x 50 mm, parois 2 mm, couvercle vissé sur 4 plots (M3 x 8 auto
 
 ![boîtier](docs/IMG_4653.jpg)
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/aOzmMNK9Uro
 
 ## Sources
 

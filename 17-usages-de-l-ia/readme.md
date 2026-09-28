@@ -17,7 +17,7 @@ Puis http://localhost:3000. Le seuil de confiance se règle avec `MIN_CONFIDENCE
 
 ml5 1.x avec MobileNet, le modèle par défaut, léger, tout tourne dans le navigateur. Serveur Node avec le module `http`, Render a juste besoin d'un port. Bootstrap 5 et JS vanilla. En dessous du seuil les résultats restent affichés mais grisés.
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/8ysgeStM5bY
 
 ## Sources
 

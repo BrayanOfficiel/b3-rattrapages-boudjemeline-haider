@@ -8,7 +8,7 @@ Estimation bottom-up par tâche comme vu en cours, TJM pris sur les sites Silkho
 - Contingence 8 % sur l'outil stocks et 15 % sur l'appli de commande. 
 - Hébergement sur VPS OVH.
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/I0O5mwQVpeY
 
 ## Sources
 

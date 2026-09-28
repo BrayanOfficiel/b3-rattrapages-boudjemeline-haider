@@ -4,7 +4,7 @@ Déploiement sur Render de l'appli du module Usages de l'IA.
 
 https://b3-rattrapages-boudjemeline-haider.onrender.com
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/iRIaRBlfljA
 
 ## Sources
 

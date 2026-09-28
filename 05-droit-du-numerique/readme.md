@@ -2,7 +2,7 @@
 
 Ce que Picard doit respecter pour poser des automates réfrigérés avec compte fidélité dans des campus. Rendu en docx et pdf.
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/7W9oQcATP2o
 
 ## Sources
 

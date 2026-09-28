@@ -31,7 +31,7 @@ Contraste 12.3:1 en clair, 21:1 en dark mode.
 Allergènes en toutes lettres. 
 ODD 10 et 12 : lisibilité, origine et Date limite de consommation affichées.
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/f6wqBbixhuM
 
 ## Sources
 

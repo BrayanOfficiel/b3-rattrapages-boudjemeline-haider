@@ -18,9 +18,9 @@ Le chatbot c'est une liste de règles avec des mots-clés, la première qui matc
 
 Aucune lib css, pour réaliser queleque chose d'unique.
 
-Vidéo : [lien à ajouter]
+Vidéo : https://youtu.be/Yrg2VCIGpoY
 
-Agent EDEN.ART : [lien à ajouter]
+Agent EDEN.ART : https://app.eden.art/agents/vault-tec-ai-companion-unit
 
 ## Sources
 
